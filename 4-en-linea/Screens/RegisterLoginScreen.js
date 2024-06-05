@@ -7,7 +7,7 @@ import {
   TextInput,
   StatusBar
 } from "react-native";
-import imagen from "../assets/fondo.jpg";
+import fondo from "../assets/fondo.jpg";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
@@ -34,7 +34,7 @@ export default function RegisterLoginScreen() {
     <View style={styles.container}>
       <StatusBar style="auto" />
       <Text style={styles.text}>Bienvenido</Text>
-      <ImageBackground source={imagen} resizeMode="cover" style={styles.image}>
+      <ImageBackground source={fondo} resizeMode="cover" style={styles.image}>
         {esLogin && (
           <TextInput
             style={styles.input}
