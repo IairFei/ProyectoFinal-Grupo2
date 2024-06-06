@@ -5,15 +5,15 @@ import { Text, View, StyleSheet, Button } from "react-native"
 export default function HomeScreen (){
     
 const navigation = useNavigation()
-const irAlogin = () =>{
-    navigation.replace('RegisterLogin')
-}
+// const irAlogin = () =>{
+//     navigation.replace('RegisterLogin')
+// }
 
     return(
         <View style={styles.container}>
             <Text style={styles.text} >Hola Home</Text>
             <View style={styles.buttonContainer} > 
-                <Button title='salir' onPress={irAlogin} />
+                {/* <Button title='salir' onPress={irAlogin} /> */}
             </View>
         </View>
 
