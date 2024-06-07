@@ -14,19 +14,19 @@ const HomeNavigation = () =>{
             return{
                 tabBarIcon: ({ focused, color, size })=>{
                     let iconName
-                    if(route.name === 'home'){
+                    if(route.name === 'HomeScreen'){
                         iconName = focused? 'home' : 'home-outline'
-                    }else if(route.name === 'jugar'){
+                    }else if(route.name === 'GameScreen'){
                         iconName = focused ? 'game-controller' : 'game-controller-outline' 
                     }else if(route.name === 'salir'){
                         iconName = focused ? 'power' : 'power-off'
                     }
                     return <Ionicons name={iconName} size={size} color={color}/>
-                }
+                }                                          
             }
         }}>
-            <BottonTab.Screen  name = 'home' component={HomeScreen} />
-            <BottonTab.Screen name = 'jugar' component={GameScreen}/>
+            <BottonTab.Screen  name = 'HomeScreen' component={HomeScreen} />
+            <BottonTab.Screen name = 'GameScreen' component={GameScreen}/>
             <BottonTab.Screen name = 'Salir' component={RegisterLoginScreen}/>
         </BottonTab.Navigator>
     )
