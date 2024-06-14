@@ -32,6 +32,7 @@ const getContacts = () => {
     })
 }
 
+
 export default {
     getContacts
 }
