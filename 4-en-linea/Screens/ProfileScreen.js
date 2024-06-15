@@ -2,20 +2,22 @@ import { View, Text, StyleSheet, Image, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ItemProfile from '../components/ItemProfile';
 
-const navigation = useNavigation()
 
-const handleLogout = () => {
-    alert("adios")
-}
+
 
 const ProfileScreen =({contac})=>{
-    const contactemp ={
-        nombre: 'Luca',
-        apellido:'Polti',
-        email:'lucapolti@ort.edu.ar',
-        telefono:'11-1111-1111'
+  const contactemp ={
+    nombre: 'Luca',
+    apellido:'Polti',
+    email:'lucapolti@ort.edu.ar',
+    telefono:'11-1111-1111'
     
-    };
+  };
+  const navigation = useNavigation()
+  
+    const handleLogout = () => {
+      alert("adios")
+  }
 
     return (
         <View style={styles.container}>    
@@ -25,10 +27,10 @@ const ProfileScreen =({contac})=>{
             <ItemProfile Title="Teléfono" Description={contactemp.telefono}/>
             <ItemProfile Title="Puesto en el Ranking" Description="1"/>
 
-            <Button title="crear cuenta" onPress={handleLogout} />
+            <Button title="cerrar cuenta" onPress={handleLogout} />
 
         </View>
-    );
+   );
 }
 
 export default ProfileScreen;
