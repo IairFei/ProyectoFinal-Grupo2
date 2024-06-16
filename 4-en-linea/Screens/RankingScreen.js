@@ -14,6 +14,9 @@ const RankingScreen = () =>{
         contactService.getContacts().then(contacts =>{
             setContacts(contacts)
         })
+        .catch(err => {
+            console.log(err)
+        })
     }, [])
 
     return(

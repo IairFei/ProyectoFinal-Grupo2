@@ -17,6 +17,7 @@ const ProfileScreen =({contac})=>{
   
     const handleLogout = () => {
       alert("adios")
+      navigation.replace('RegisterScreen')
   }
 
     return (
