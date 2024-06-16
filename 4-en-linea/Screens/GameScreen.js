@@ -13,13 +13,27 @@ const ConnectFour = () => {
 const [currentPlayer, setCurrentPlayer] = useState('red')
 
   const handlePress = (row, col) => {
-  
+ 
+    let validateRow = findValidateRow(col);
+   
+    if (validateRow == null) {
+      return;
+    }
   const updatedBoard = [...board];
-  updatedBoard[row][col] = currentPlayer; 
+  updatedBoard[validateRow][col] = currentPlayer; 
   setBoard(updatedBoard);
   console.log(`Pressed row: ${row}, col: ${col}`);
- setCurrentPlayer(currentPlayer == 'red'? 'yellow' : 'red')
+  setCurrentPlayer(currentPlayer == 'red'? 'yellow' : 'red')
 }
+
+const findValidateRow = (col) => {
+  for (let i = ROWS - 1; i >= 0; i--) {
+    if (board[i][col] === null) {
+      return i;
+    }
+  }
+  return null; 
+};
 
 const handleReset = () =>{
   setBoard(Array.from({ length: ROWS },
