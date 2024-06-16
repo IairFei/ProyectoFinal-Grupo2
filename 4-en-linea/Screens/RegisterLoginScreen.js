@@ -21,12 +21,22 @@ export default function RegisterLoginScreen() {
   const navigation = useNavigation()
 
   const HandleLogin = () => {
-    if(email && password){
-        alert('Login Conseguido')
+    if(email.toLowerCase() === 'admin' && password.toLowerCase() === 'admin' ){
+        alert(`Login conseguido, bienvenido ${nombre}`)
         navigation.replace('PantallaHome')
     }else{
         alert('Login Fallado')
     }
+
+}
+
+const HandleRegister = () => {
+  if(email && password){
+      alert(`Login conseguido, bienvenido ${nombre}`)
+      navigation.replace('PantallaHome')
+  }else{
+      alert('Login Fallado')
+  }
 
 }
 
@@ -65,7 +75,7 @@ export default function RegisterLoginScreen() {
           {!esLogin ? (
             <Button title="todavia no estas registrado?" onPress={setEsLogin} />
           ) : (
-            <Button title="crear cuenta" onPress={HandleLogin} />
+            <Button title="crear cuenta" onPress={HandleRegister} />
           )}
         </View>
       </ImageBackground>

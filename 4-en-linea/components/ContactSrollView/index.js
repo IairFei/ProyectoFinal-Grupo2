@@ -1,12 +1,18 @@
-import { ScrollView } from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native";
 import Contact from "../Contact";
+import { useNavigation } from "@react-navigation/native";
 
 export default ({ contacts }) =>{
+
+    const navigation = useNavigation()
+
     return(
         <ScrollView>
               {
                 contacts.map((contact, index)=> (
-                    <Contact key={index} contact={contact} />
+                    <TouchableOpacity key={index} onPress={() =>navigation.navigate('DetailScreen', {id: contact.id})}>
+                        <Contact  contact={contact} />
+                    </TouchableOpacity>
                 ))
             }
         </ScrollView>
