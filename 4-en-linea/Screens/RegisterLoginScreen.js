@@ -5,12 +5,12 @@ import {
   Text,
   View,
   TextInput,
+  TouchableOpacity,
   StatusBar
 } from "react-native";
 import fondo from "../assets/fondo.jpg";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-
 
 export default function RegisterLoginScreen() {
   const [nombre, setNombre] = useState("");
@@ -18,65 +18,77 @@ export default function RegisterLoginScreen() {
   const [password, setPassword] = useState("");
   const [esLogin, setEsLogin] = useState(false);
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   const HandleLogin = () => {
-    if(email.toLowerCase() === 'admin' && password.toLowerCase() === 'admin' ){
-        alert(`Login conseguido, bienvenido ${nombre}`)
-        navigation.replace('PantallaHome')
-    }else{
-        alert('Login Fallado')
+    if (email.toLowerCase() === 'admin' && password.toLowerCase() === 'admin') {
+      alert(`Bienvenido ${nombre}`);
+      navigation.replace('PantallaHome');
+    } else {
+      alert('Login Fallado');
     }
+  };
 
-}
-
-const HandleRegister = () => {
-  if(email && password){
-      alert(`Login conseguido, bienvenido ${nombre}`)
-      navigation.replace('PantallaHome')
-  }else{
-      alert('Login Fallado')
-  }
-
-}
+  const HandleRegister = () => {
+    if (email && password) {
+      alert(`Bienvenido ${nombre}`);
+      navigation.replace('PantallaHome');
+    } else {
+      alert('Registro Fallado');
+    }
+  };
 
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Text style={styles.text}>Bienvenido</Text>
       <ImageBackground source={fondo} resizeMode="cover" style={styles.image}>
-        {esLogin && (
+        <View style={styles.overlay} />
+        <View style={styles.content}>
+          <Text style={styles.title}>Bienvenido</Text>
+          {esLogin && (
+            <TextInput
+              style={styles.input}
+              placeholder="Ingrese su nombre"
+              value={nombre}
+              onChangeText={setNombre}
+              placeholderTextColor={"#ccc"}
+            />
+          )}
           <TextInput
             style={styles.input}
-            placeholder="Ingrese su Nombre"
-            value={nombre}
-            onChangeText={setNombre}
-            placeholderTextColor={"white"}
+            placeholder="Ingrese su email"
+            value={email}
+            onChangeText={setEmail}
+            placeholderTextColor={"#ccc"}
+            keyboardType="email-address"
           />
-        )}
-        <TextInput
-          style={styles.input}
-          placeholder="Ingrese su Email"
-          value={email}
-          onChangeText={setEmail}
-          placeholderTextColor={"white"}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Ingrese su Password"
-          value={password}
-          onChangeText={setPassword}
-          placeholderTextColor={"white"}
-        />
-        <View style={styles.buttonContainer}>
-            {
-                !esLogin && (<Button title="iniciar secion"  onPress={HandleLogin}/>)
-            }
-          {!esLogin ? (
-            <Button title="todavia no estas registrado?" onPress={setEsLogin} />
-          ) : (
-            <Button title="crear cuenta" onPress={HandleRegister} />
-          )}
+          <TextInput
+            style={styles.input}
+            placeholder="Ingrese su contraseña"
+            value={password}
+            onChangeText={setPassword}
+            placeholderTextColor={"#ccc"}
+            secureTextEntry
+          />
+          <View style={styles.buttonContainer}>
+            {!esLogin ? (
+              <TouchableOpacity style={styles.button} onPress={HandleLogin}>
+                <Text style={styles.buttonText}>Iniciar sesión</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.button} onPress={HandleRegister}>
+                <Text style={styles.buttonText}>Crear cuenta</Text>
+              </TouchableOpacity>
+            )}
+            {!esLogin && (
+              <TouchableOpacity
+                style={styles.registerButton}
+                onPress={() => setEsLogin(true)}
+              >
+                <Text style={styles.buttonText}>Registrarse</Text>
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
       </ImageBackground>
     </View>
@@ -86,38 +98,58 @@ const HandleRegister = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     justifyContent: "center",
-  },
-  buttonContainer: {
-    padding: 30,
-    flexDirection: "column",
-    justifyContent: "space-around",
   },
   image: {
     flex: 1,
     justifyContent: "center",
   },
-  text: {
-    color: "white",
-    fontSize: 42,
-    lineHeight: 84,
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  content: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 20,
+  },
+  title: {
+    color: "#fff",
+    fontSize: 36,
     fontWeight: "bold",
     textAlign: "center",
-    backgroundColor: "#000000c0",
+    marginBottom: 40,
   },
   input: {
-    height: 40,
-    borderColor: "white",
+    height: 50,
+    borderColor: "#fff",
     borderWidth: 1,
+    borderRadius: 25,
     marginBottom: 20,
-    paddingHorizontal: 10,
-    backgroundColor: "#000000c0",
-    color: "white",
+    paddingHorizontal: 20,
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    color: "#fff",
   },
-  register: {
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 20,
+  buttonContainer: {
+    marginTop: 20,
+  },
+  button: {
+    backgroundColor: "#1E90FF",
+    padding: 15,
+    borderRadius: 25,
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  registerButton: {
+    backgroundColor: "#4CAF50",
+    padding: 15,
+    borderRadius: 25,
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
