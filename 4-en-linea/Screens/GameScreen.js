@@ -11,6 +11,7 @@ const ConnectFour = () => {
   const [winner, setWinner] = useState(null);
 
   const handlePress = (row, col) => {
+<<<<<<< HEAD
     if (!gameOver) {
       const updatedBoard = [...board];
       updatedBoard[row][col] = currentPlayer;
@@ -25,6 +26,35 @@ const ConnectFour = () => {
     setWinner(null);
     setGameOver(false);
   };
+=======
+ 
+    let validateRow = findValidateRow(col);
+   
+    if (validateRow == null) {
+      return;
+    }
+  const updatedBoard = [...board];
+  updatedBoard[validateRow][col] = currentPlayer; 
+  setBoard(updatedBoard);
+  console.log(`Pressed row: ${row}, col: ${col}`);
+  setCurrentPlayer(currentPlayer == 'red'? 'yellow' : 'red')
+}
+
+const findValidateRow = (col) => {
+  for (let i = ROWS - 1; i >= 0; i--) {
+    if (board[i][col] === null) {
+      return i;
+    }
+  }
+  return null; 
+};
+
+const handleReset = () =>{
+  setBoard(Array.from({ length: ROWS },
+    () => Array(COLS).fill(null)))
+   setCurrentPlayer('red') 
+}
+>>>>>>> 117ddf7bfcccd11c7c79d6d8b17b136c75d7eae3
 
   // Efecto para verificar ganador después de cada jugada
   React.useEffect(() => {
