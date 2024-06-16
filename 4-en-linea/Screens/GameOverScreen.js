@@ -6,7 +6,7 @@ export default function GameOverScreen() {
     const navigation = useNavigation()
     
     const irAInicio = () => {
-        navigation.replace('Home')
+        navigation.replace('HomeNavigation')
     }
 
     return (
