@@ -1,23 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, StyleSheet, Button, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const ROWS = 6;
 const COLS = 7;
 
 const ConnectFour = () => {
+  const navigation = useNavigation();
   const [board, setBoard] = useState(Array.from({ length: ROWS }, () => Array(COLS).fill(null)));
   const [currentPlayer, setCurrentPlayer] = useState('red');
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState(null);
 
   const handlePress = (row, col) => {
-<<<<<<< HEAD
-    if (!gameOver) {
-      const updatedBoard = [...board];
-      updatedBoard[row][col] = currentPlayer;
-      setBoard(updatedBoard);
-      setCurrentPlayer(currentPlayer === 'red' ? 'yellow' : 'red');
+    if (gameOver) return;
+    let validateRow = findValidateRow(col);
+    if (validateRow == null) return;
+
+    const updatedBoard = [...board];
+    updatedBoard[validateRow][col] = currentPlayer;
+    setBoard(updatedBoard);
+    setCurrentPlayer(currentPlayer === 'red' ? 'yellow' : 'red');
+  };
+
+  const findValidateRow = (col) => {
+    for (let i = ROWS - 1; i >= 0; i--) {
+      if (board[i][col] === null) {
+        return i;
+      }
     }
+    return null;
   };
 
   const handleReset = () => {
@@ -26,43 +38,12 @@ const ConnectFour = () => {
     setWinner(null);
     setGameOver(false);
   };
-=======
- 
-    let validateRow = findValidateRow(col);
-   
-    if (validateRow == null) {
-      return;
-    }
-  const updatedBoard = [...board];
-  updatedBoard[validateRow][col] = currentPlayer; 
-  setBoard(updatedBoard);
-  console.log(`Pressed row: ${row}, col: ${col}`);
-  setCurrentPlayer(currentPlayer == 'red'? 'yellow' : 'red')
-}
 
-const findValidateRow = (col) => {
-  for (let i = ROWS - 1; i >= 0; i--) {
-    if (board[i][col] === null) {
-      return i;
-    }
-  }
-  return null; 
-};
-
-const handleReset = () =>{
-  setBoard(Array.from({ length: ROWS },
-    () => Array(COLS).fill(null)))
-   setCurrentPlayer('red') 
-}
->>>>>>> 117ddf7bfcccd11c7c79d6d8b17b136c75d7eae3
-
-  // Efecto para verificar ganador después de cada jugada
-  React.useEffect(() => {
+  useEffect(() => {
     const checkForWinner = (board, player) => {
-      // Implementa la lógica para verificar ganador aquí
-      // Ejemplo simplificado para horizontal y vertical:
-      for (let col = 0; col <= COLS - 4; col++) {
-        for (let row = 0; row < ROWS; row++) {
+      // Check horizontal
+      for (let row = 0; row < ROWS; row++) {
+        for (let col = 0; col <= COLS - 4; col++) {
           if (
             board[row][col] === player &&
             board[row][col + 1] === player &&
@@ -73,6 +54,7 @@ const handleReset = () =>{
           }
         }
       }
+      // Check vertical
       for (let col = 0; col < COLS; col++) {
         for (let row = 0; row <= ROWS - 4; row++) {
           if (
@@ -85,6 +67,32 @@ const handleReset = () =>{
           }
         }
       }
+      // Check diagonal (bottom-left to top-right)
+      for (let row = 3; row < ROWS; row++) {
+        for (let col = 0; col <= COLS - 4; col++) {
+          if (
+            board[row][col] === player &&
+            board[row - 1][col + 1] === player &&
+            board[row - 2][col + 2] === player &&
+            board[row - 3][col + 3] === player
+          ) {
+            return true;
+          }
+        }
+      }
+      // Check diagonal (top-left to bottom-right)
+      for (let row = 0; row <= ROWS - 4; row++) {
+        for (let col = 0; col <= COLS - 4; col++) {
+          if (
+            board[row][col] === player &&
+            board[row + 1][col + 1] === player &&
+            board[row + 2][col + 2] === player &&
+            board[row + 3][col + 3] === player
+          ) {
+            return true;
+          }
+        }
+      }
       return false;
     };
 
@@ -92,28 +100,31 @@ const handleReset = () =>{
       for (let col = 0; col < COLS; col++) {
         for (let row = 0; row < ROWS; row++) {
           if (board[row][col] === null) {
-            return false; // Todavía hay espacio vacío
+            return false;
           }
         }
       }
-      return true; // El tablero está lleno
+      return true;
     };
 
     const checkGameOver = () => {
       if (checkForWinner(board, 'red')) {
-        setWinner('Jugador 1');
+        setWinner('Ganador Jugador 1');
         setGameOver(true);
+        navigation.replace('GameOverScreen', { winner: 'Ganador Jugador 1' });
       } else if (checkForWinner(board, 'yellow')) {
-        setWinner('Jugador 2');
+        setWinner('Ganador Jugador 2');
         setGameOver(true);
+        navigation.replace('GameOverScreen', { winner: 'Ganador Jugador 2' });
       } else if (boardFull(board)) {
         setWinner('Empate');
         setGameOver(true);
+        navigation.replace('GameOverScreen', { winner: 'Empate' });
       }
     };
 
     checkGameOver();
-  }, [board]); // Se ejecuta después de cada cambio en el tablero
+  }, [board, navigation]);
 
   return (
     <View style={styles.container}>

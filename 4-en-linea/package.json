@@ -20,14 +20,9 @@
     "expo-status-bar": "~1.12.1",
     "react": "18.2.0",
     "react-native": "^0.74.2",
-<<<<<<< HEAD
-    "react-native-safe-area-context": "^4.10.1",
-    "react-native-screens": "^3.31.1"
-=======
     "react-native-safe-area-context": "4.10.1",
     "react-native-screens": "3.31.1",
     "socket.io-client": "^4.7.5"
->>>>>>> 117ddf7bfcccd11c7c79d6d8b17b136c75d7eae3
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
