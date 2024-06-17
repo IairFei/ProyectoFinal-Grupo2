@@ -78,15 +78,17 @@ export default function RegisterLoginScreen() {
             ) : (
               <TouchableOpacity style={styles.button} onPress={HandleRegister}>
                 <Text style={styles.buttonText}>Crear cuenta</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> 
+
             )}
-            {!esLogin && (
-              <TouchableOpacity
-                style={styles.registerButton}
-                onPress={() => setEsLogin(true)}
-              >
+            {!esLogin ? (
+              <TouchableOpacity style={styles.registerButton} onPress={() => setEsLogin(true)}>
                 <Text style={styles.buttonText}>Registrarse</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> 
+            ) : (
+              <TouchableOpacity style={styles.button} onPress={() => setEsLogin(false)}>
+                <Text style={styles.buttonText}>Ya tengo cuenta</Text>
+              </TouchableOpacity> 
             )}
           </View>
         </View>
