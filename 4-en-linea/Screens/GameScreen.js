@@ -1,50 +1,33 @@
 
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, ImageBackground, Button, Text, Alert } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, ImageBackground, Button, Text } from 'react-native';
 import fondo from '../assets/fondo.jpg'
-import { useNavigation } from "@react-navigation/native"
-
-//const navigation = useNavigation();
 
 const ROWS = 6;
 const COLS = 7;
 
 const ConnectFour = () => {
-  const [board, setBoard] = useState(Array.from({ length: ROWS },
-                                    () => Array(COLS).fill(null)));
-  
-const [currentPlayer, setCurrentPlayer] = useState('red')
+  const navigation = useNavigation();
+  const [board, setBoard] = useState(Array.from({ length: ROWS }, () => Array(COLS).fill(null)));
+  const [currentPlayer, setCurrentPlayer] = useState('red');
+  const [gameOver, setGameOver] = useState(false);
+  const [winner, setWinner] = useState(null);
 
-  const handlePress = (col) => {
+  const handlePress = (row, col) => {
  
-    let validateRow = ValidateRow( col);
+    let validateRow = findValidateRow(col);
    
-    if (validateRow === null) {
+    if (validateRow == null) {
       return;
     }
   const updatedBoard = [...board];
   updatedBoard[validateRow][col] = currentPlayer; 
   setBoard(updatedBoard);
-  //console.log(`Pressed row: ${row}, col: ${col}`);
-
-  if (ganador(updatedBoard, validateRow, col, currentPlayer)) { 
-    Alert.alert("",`Ganó el ${currentPlayer == 'red' ? 'Jugador 1' : 'Jugador 2'}`,[
-      {
-        text: 'Ir a Home',
-        //onPress: ()=>{navigation.replace('PantallaHome');}
-      },
-      {
-        text: 'Reiniciar',
-        onPress: handleReset,
-      }
-    ])
-    return;
-  }
-
+  console.log(`Pressed row: ${row}, col: ${col}`);
   setCurrentPlayer(currentPlayer == 'red'? 'yellow' : 'red')
 }
 
-const ValidateRow = (col) => {
+const findValidateRow = (col) => {
   for (let i = ROWS - 1; i >= 0; i--) {
     if (board[i][col] === null) {
       return i;
@@ -53,43 +36,101 @@ const ValidateRow = (col) => {
   return null; 
 };
 
-const ganador = (board, row, col, player) => {
-  return (
-    direccion(board, row, col, player, 0, 1) || 
-    direccion(board, row, col, player, 1, 0) || 
-    direccion(board, row, col, player, 1, 1) || 
-    direccion(board, row, col, player, 1, -1)   
-  );
-};
+  const handleReset = () => {
+    setBoard(Array.from({ length: ROWS }, () => Array(COLS).fill(null)));
+    setCurrentPlayer('red');
+    setWinner(null);
+    setGameOver(false);
+  };
 
-const direccion = (board, row, col, player, rowDireccion, colDireccion) => {
-  let count = 0; 
-  for (let i = -3; i <= 3; i++) {
-    const newRow = row + i * rowDireccion; 
-    const newCol = col + i * colDireccion; 
-
-    if ((newRow >= 0 && newRow < ROWS) && 
-      (newCol >= 0 && newCol < COLS) && 
-      board[newRow][newCol] === player) {
-      count++; 
-      if (count === 4) { 
-        return true; 
+  useEffect(() => {
+    const checkForWinner = (board, player) => {
+      // Check horizontal
+      for (let row = 0; row < ROWS; row++) {
+        for (let col = 0; col <= COLS - 4; col++) {
+          if (
+            board[row][col] === player &&
+            board[row][col + 1] === player &&
+            board[row][col + 2] === player &&
+            board[row][col + 3] === player
+          ) {
+            return true;
+          }
+        }
       }
-    } else {
-      count = 0; 
-    }
-  }
-  return false;
-};
+      // Check vertical
+      for (let col = 0; col < COLS; col++) {
+        for (let row = 0; row <= ROWS - 4; row++) {
+          if (
+            board[row][col] === player &&
+            board[row + 1][col] === player &&
+            board[row + 2][col] === player &&
+            board[row + 3][col] === player
+          ) {
+            return true;
+          }
+        }
+      }
+      // Check diagonal (bottom-left to top-right)
+      for (let row = 3; row < ROWS; row++) {
+        for (let col = 0; col <= COLS - 4; col++) {
+          if (
+            board[row][col] === player &&
+            board[row - 1][col + 1] === player &&
+            board[row - 2][col + 2] === player &&
+            board[row - 3][col + 3] === player
+          ) {
+            return true;
+          }
+        }
+      }
+      // Check diagonal (top-left to bottom-right)
+      for (let row = 0; row <= ROWS - 4; row++) {
+        for (let col = 0; col <= COLS - 4; col++) {
+          if (
+            board[row][col] === player &&
+            board[row + 1][col + 1] === player &&
+            board[row + 2][col + 2] === player &&
+            board[row + 3][col + 3] === player
+          ) {
+            return true;
+          }
+        }
+      }
+      return false;
+    };
 
+    const boardFull = (board) => {
+      for (let col = 0; col < COLS; col++) {
+        for (let row = 0; row < ROWS; row++) {
+          if (board[row][col] === null) {
+            return false;
+          }
+        }
+      }
+      return true;
+    };
 
-const handleReset = () =>{
-  setBoard(Array.from({ length: ROWS },
-    () => Array(COLS).fill(null)))
-   setCurrentPlayer('red') 
-}
+    const checkGameOver = () => {
+      if (checkForWinner(board, 'red')) {
+        setWinner('Ganador Jugador 1');
+        setGameOver(true);
+        navigation.replace('GameOverScreen', { winner: 'Ganador Jugador 1' });
+      } else if (checkForWinner(board, 'yellow')) {
+        setWinner('Ganador Jugador 2');
+        setGameOver(true);
+        navigation.replace('GameOverScreen', { winner: 'Ganador Jugador 2' });
+      } else if (boardFull(board)) {
+        setWinner('Empate');
+        setGameOver(true);
+        navigation.replace('GameOverScreen', { winner: 'Empate' });
+      }
+    };
 
- return (
+    checkGameOver();
+  }, [board, navigation]);
+
+  return (
     <View style={styles.container}>
         <Text style={styles.text}>
         {
@@ -102,7 +143,7 @@ const handleReset = () =>{
             <TouchableOpacity
               key={colIndex}
               style={styles.cell}
-              onPress={() => handlePress(colIndex)}
+              onPress={() => handlePress(rowIndex, colIndex)}
             >
               <View style={[styles.disc, cell && styles[cell]]} />
             </TouchableOpacity>
@@ -143,21 +184,21 @@ const styles = StyleSheet.create({
   yellow: {
     backgroundColor: 'yellow',
   },
-  image: {
-    flex: 1,
-    justifyContent: "center",
-  },
   text: {
-    color: "white",
-    fontSize: 42,
-    lineHeight: 84,
-    fontWeight: "bold",
-    textAlign: "center",
-    backgroundColor: "#000000c0",
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  gameOverContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gameOverText: {
+    fontSize: 30,
+    marginBottom: 20,
   },
 });
 
 export default ConnectFour;
-
-
-

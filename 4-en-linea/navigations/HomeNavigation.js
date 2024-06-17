@@ -6,36 +6,38 @@ import RegisterLoginScreen from "../Screens/RegisterLoginScreen";
 import RankingScreen from "../Screens/RankingScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import { Ionicons } from "@expo/vector-icons";
+import GameOverScreen from "../Screens/GameOverScreen";  
 
-const HomeNavigation = () =>{
-    const BottonTab = createBottomTabNavigator()
-   
+const HomeNavigation = () => {
+    const BottomTab = createBottomTabNavigator()
 
-    return(
-        <BottonTab.Navigator screenOptions={({ route })=>{
-            return{
-                tabBarIcon: ({ focused, color, size })=>{
+    return (
+        <BottomTab.Navigator screenOptions={({ route }) => {
+            return {
+                tabBarIcon: ({ focused, color, size }) => {
                     let iconName
-                    if(route.name === 'HomeScreen'){
-                        iconName = focused? 'home' : 'home-outline'
-                    }else if(route.name === 'GameScreen'){
-                        iconName = focused ? 'game-controller' : 'game-controller-outline' 
-                    }else if(route.name === 'Perfil'){
+                    if (route.name === 'HomeScreen') {
+                        iconName = focused ? 'home' : 'home-outline'
+                    } else if (route.name === 'GameScreen') {
+                        iconName = focused ? 'game-controller' : 'game-controller-outline'
+                    } else if (route.name === 'Perfil') {
                         iconName = focused ? 'person-circle' : 'person-circle-outline'
-                    }else if(route.name === 'Ranking'){
+                    } else if (route.name === 'Ranking') {
                         iconName = focused ? 'star' : 'star-outline'
+                    } else if (route.name === 'GameOver') {
+                        iconName = focused ? 'alert-circle' : 'alert-circle-outline'
                     }
-                    return <Ionicons name={iconName} size={size} color={color}/>
-                }                                          
+                    return <Ionicons name={iconName} size={size} color={color} />
+                }
             }
         }}>
-            <BottonTab.Screen  name = 'HomeScreen' component={HomeScreen} />
-            <BottonTab.Screen name = 'GameScreen' component={GameScreen}/>
-            <BottonTab.Screen name = 'Ranking' component={RankingScreen}/>
-            <BottonTab.Screen name = 'Perfil' component={ProfileScreen}/>
-        </BottonTab.Navigator>
+            <BottomTab.Screen name='HomeScreen' component={HomeScreen} />
+            <BottomTab.Screen name='GameScreen' component={GameScreen} />
+            <BottomTab.Screen name='Ranking' component={RankingScreen} />
+            <BottomTab.Screen name='Perfil' component={ProfileScreen} />
+            <BottomTab.Screen name='GameOver' component={GameOverScreen} /> 
+        </BottomTab.Navigator>
     )
-
 }
 
 export default HomeNavigation
