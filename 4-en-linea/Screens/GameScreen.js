@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, StyleSheet, Button, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+
+import React, { useState } from 'react';
+import { View, TouchableOpacity, StyleSheet, ImageBackground, Button, Text } from 'react-native';
+import fondo from '../assets/fondo.jpg'
 
 const ROWS = 6;
 const COLS = 7;
@@ -13,24 +14,27 @@ const ConnectFour = () => {
   const [winner, setWinner] = useState(null);
 
   const handlePress = (row, col) => {
-    if (gameOver) return;
+ 
     let validateRow = findValidateRow(col);
-    if (validateRow == null) return;
-
-    const updatedBoard = [...board];
-    updatedBoard[validateRow][col] = currentPlayer;
-    setBoard(updatedBoard);
-    setCurrentPlayer(currentPlayer === 'red' ? 'yellow' : 'red');
-  };
-
-  const findValidateRow = (col) => {
-    for (let i = ROWS - 1; i >= 0; i--) {
-      if (board[i][col] === null) {
-        return i;
-      }
+   
+    if (validateRow == null) {
+      return;
     }
-    return null;
-  };
+  const updatedBoard = [...board];
+  updatedBoard[validateRow][col] = currentPlayer; 
+  setBoard(updatedBoard);
+  console.log(`Pressed row: ${row}, col: ${col}`);
+  setCurrentPlayer(currentPlayer == 'red'? 'yellow' : 'red')
+}
+
+const findValidateRow = (col) => {
+  for (let i = ROWS - 1; i >= 0; i--) {
+    if (board[i][col] === null) {
+      return i;
+    }
+  }
+  return null; 
+};
 
   const handleReset = () => {
     setBoard(Array.from({ length: ROWS }, () => Array(COLS).fill(null)));
@@ -128,31 +132,25 @@ const ConnectFour = () => {
 
   return (
     <View style={styles.container}>
-      {!gameOver ? (
-        <View>
-          <Text style={styles.text}>
-            {currentPlayer === 'red' ? 'Jugador 1' : 'Jugador 2'}
-          </Text>
-          {board.map((row, rowIndex) => (
-            <View key={rowIndex} style={styles.row}>
-              {row.map((cell, colIndex) => (
-                <TouchableOpacity
-                  key={colIndex}
-                  style={styles.cell}
-                  onPress={() => handlePress(rowIndex, colIndex)}
-                >
-                  <View style={[styles.disc, cell && styles[cell]]} />
-                </TouchableOpacity>
-              ))}
-            </View>
+        <Text style={styles.text}>
+        {
+            currentPlayer == 'red' ? "Jugador 1" : "Jugador 2"
+        } 
+        </Text>
+      {board.map((row, rowIndex) => (
+        <View key={rowIndex} style={styles.row}>
+          {row.map((cell, colIndex) => (
+            <TouchableOpacity
+              key={colIndex}
+              style={styles.cell}
+              onPress={() => handlePress(rowIndex, colIndex)}
+            >
+              <View style={[styles.disc, cell && styles[cell]]} />
+            </TouchableOpacity>
           ))}
         </View>
-      ) : (
-        <View style={styles.gameOverContainer}>
-          <Text style={styles.gameOverText}>{winner}</Text>
-          <Button title="Reiniciar Juego" onPress={handleReset} />
-        </View>
-      )}
+      ))}
+      <Button title='Reiniciar' onPress={handleReset} />
     </View>
   );
 };
