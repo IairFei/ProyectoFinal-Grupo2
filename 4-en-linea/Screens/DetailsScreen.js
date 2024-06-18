@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import contactService from '../services/contacts.js';
 import { View, StatusBar, StyleSheet } from "react-native";
-import Contact from '../components/Contact';
+import Contact from '../components/Contact/index.js';
 
-export default function DetailScreen({ route }) {
+export default function DetailsScreen({ route }) {
   const { id } = route.params;
   const [contact, setContact] = useState({});
 
