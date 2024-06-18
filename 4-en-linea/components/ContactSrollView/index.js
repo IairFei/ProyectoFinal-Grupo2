@@ -9,9 +9,9 @@ export default ({ contacts }) =>{
     return(
         <ScrollView>
               {
-                contacts.map((contact, index)=> (
-                    <TouchableOpacity key={index} onPress={() =>navigation.navigate('DetailScreen', {id: contact.id})}>
-                        <Contact  contact={contact} />
+                contacts.map((contact, index)=> (                                   
+                    <TouchableOpacity key={index} onPress={() =>navigation.navigate('DetailsScreen', {id: contact.id})}>
+                        <Contact  contact={contact} />                               
                     </TouchableOpacity>
                 ))
             }

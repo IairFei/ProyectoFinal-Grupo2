@@ -19,9 +19,9 @@ const HomeNavigation = () => {
                         iconName = focused ? 'home' : 'home-outline'
                     } else if (route.name === 'GameScreen') {
                         iconName = focused ? 'game-controller' : 'game-controller-outline'
-                    } else if (route.name === 'Perfil') {
+                    } else if (route.name === 'ProfileScreeen') {
                         iconName = focused ? 'person-circle' : 'person-circle-outline'
-                    } else if (route.name === 'Ranking') {
+                    } else if (route.name === 'RankingScreen') {
                         iconName = focused ? 'star' : 'star-outline'
                     }
                     return <Ionicons name={iconName} size={size} color={color} />
@@ -30,8 +30,8 @@ const HomeNavigation = () => {
         }}>
             <BottomTab.Screen name='HomeScreen' component={HomeScreen} />
             <BottomTab.Screen name='GameScreen' component={GameScreen} />
-            <BottomTab.Screen name='Ranking' component={RankingScreen} />
-            <BottomTab.Screen name='Perfil' component={ProfileScreen} />
+            <BottomTab.Screen name='RankingScreen' component={RankingScreen} />
+            <BottomTab.Screen name='ProfileScreeen' component={ProfileScreen} />
         </BottomTab.Navigator>
     )
 }

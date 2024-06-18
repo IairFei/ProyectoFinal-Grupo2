@@ -1,6 +1,8 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Text, View, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
 import fondo from "../assets/fondo.jpg";
+import HomeNavigation from "../navigations/HomeNavigation.js";
+import GameScreen from '../Screens/GameScreen.js'
 
 export default function GameOverScreen() {
   const navigation = useNavigation();
@@ -8,11 +10,11 @@ export default function GameOverScreen() {
   const { winner } = route.params;
 
   const irAInicio = () => {
-    navigation.replace('HomeScreen');
+    navigation.replace('PantallaHome');
   };
 
   const reiniciarJuego = () => {
-    navigation.replace('GameScreen');
+    navigation.replace('PantallaHome', { screen: 'GameScreen' });
   };
 
   return (

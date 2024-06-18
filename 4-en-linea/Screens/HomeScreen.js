@@ -10,7 +10,7 @@ export default function HomeScreen() {
   };
 
   const viewProfile = () => {
-    navigation.navigate('ProfileScreen');
+    navigation.navigate('ProfileScreeen');
   };
 
   return (

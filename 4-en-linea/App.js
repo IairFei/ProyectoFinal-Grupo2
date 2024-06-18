@@ -24,15 +24,10 @@ export default function App() {
           name='PantallaHome'
           component={HomeNavigation}
           options={{ headerShown: false }}
-        />
-        <Stack.Screen 
+        /> 
+       <Stack.Screen 
           name='DetailsScreen'
           component={DetailsScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen 
-          name='HomeScreen'
-          component={HomeScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen 
@@ -40,21 +35,6 @@ export default function App() {
           component={GameOverScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen 
-          name='GameScreen'
-          component={GameScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen 
-          name='ProfileScreen'
-          component={ProfileScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen 
-          name='RankingScreen'
-          component={RankingScreen}
-          options={{ headerShown: false }}
-        />             
       </Stack.Navigator>
     </NavigationContainer>
   );
