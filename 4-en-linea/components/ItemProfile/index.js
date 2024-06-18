@@ -1,26 +1,29 @@
-import { View, Text, StyleSheet, Image, Button } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
-const ItemProfile =({Title, Description}) =>{
-    return(
-        <View>    
-            <Text style={styles.label}>{Title}</Text>
-            <Text style={styles.value}>{Description}</Text>
-        </View>
-    )
-
-}
-
-export default ItemProfile;
+const ItemProfile = ({ title, description }) => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.description}>{description}</Text>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    label: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      marginTop: 10,
-    },
-    value: {
-      fontSize: 16,
-      marginBottom: 10,
-    },
-  });
+  container: {
+    marginBottom: 10,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: '#333',
+  },
+  description: {
+    fontSize: 16,
+    color: '#666',
+  },
+});
 
+export default ItemProfile;

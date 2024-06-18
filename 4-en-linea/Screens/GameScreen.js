@@ -1,7 +1,6 @@
-
-import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, ImageBackground, Button, Text } from 'react-native';
-import fondo from '../assets/fondo.jpg'
+import React, { useEffect, useState } from 'react';
+import { View, TouchableOpacity, StyleSheet, Button, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const ROWS = 6;
 const COLS = 7;
@@ -14,27 +13,24 @@ const ConnectFour = () => {
   const [winner, setWinner] = useState(null);
 
   const handlePress = (row, col) => {
- 
     let validateRow = findValidateRow(col);
-   
     if (validateRow == null) {
       return;
     }
-  const updatedBoard = [...board];
-  updatedBoard[validateRow][col] = currentPlayer; 
-  setBoard(updatedBoard);
-  console.log(`Pressed row: ${row}, col: ${col}`);
-  setCurrentPlayer(currentPlayer == 'red'? 'yellow' : 'red')
-}
+    const updatedBoard = [...board];
+    updatedBoard[validateRow][col] = currentPlayer;
+    setBoard(updatedBoard);
+    setCurrentPlayer(currentPlayer === 'red' ? 'yellow' : 'red');
+  };
 
-const findValidateRow = (col) => {
-  for (let i = ROWS - 1; i >= 0; i--) {
-    if (board[i][col] === null) {
-      return i;
+  const findValidateRow = (col) => {
+    for (let i = ROWS - 1; i >= 0; i--) {
+      if (board[i][col] === null) {
+        return i;
+      }
     }
-  }
-  return null; 
-};
+    return null;
+  };
 
   const handleReset = () => {
     setBoard(Array.from({ length: ROWS }, () => Array(COLS).fill(null)));
@@ -132,25 +128,26 @@ const findValidateRow = (col) => {
 
   return (
     <View style={styles.container}>
-        <Text style={styles.text}>
-        {
-            currentPlayer == 'red' ? "Jugador 1" : "Jugador 2"
-        } 
-        </Text>
-      {board.map((row, rowIndex) => (
-        <View key={rowIndex} style={styles.row}>
-          {row.map((cell, colIndex) => (
-            <TouchableOpacity
-              key={colIndex}
-              style={styles.cell}
-              onPress={() => handlePress(rowIndex, colIndex)}
-            >
-              <View style={[styles.disc, cell && styles[cell]]} />
-            </TouchableOpacity>
-          ))}
-        </View>
-      ))}
-      <Button title='Reiniciar' onPress={handleReset} />
+      <Text style={styles.text}>
+        {currentPlayer === 'red' ? "Turno Jugador 1 (Rojo)" : "Turno Jugador 2 (Amarillo)"}
+      </Text>
+      <View style={styles.board}>
+        {board.map((row, rowIndex) => (
+          <View key={rowIndex} style={styles.row}>
+            {row.map((cell, colIndex) => (
+              <TouchableOpacity
+                key={colIndex}
+                style={styles.cell}
+                onPress={() => handlePress(rowIndex, colIndex)}
+                disabled={cell !== null || gameOver}
+              >
+                <View style={[styles.disc, cell && styles[cell]]} />
+              </TouchableOpacity>
+            ))}
+          </View>
+        ))}
+      </View>
+      <Button title="Reiniciar" onPress={handleReset} color="#841584" />
     </View>
   );
 };
@@ -158,8 +155,21 @@ const findValidateRow = (col) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#282C34',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  text: {
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  board: {
+    backgroundColor: '#1e1e1e',
+    padding: 10,
+    borderRadius: 10,
+    marginBottom: 20,
   },
   row: {
     flexDirection: 'row',
@@ -167,7 +177,6 @@ const styles = StyleSheet.create({
   cell: {
     width: 50,
     height: 50,
-    backgroundColor: '#ccc',
     margin: 2,
     justifyContent: 'center',
     alignItems: 'center',
@@ -183,21 +192,6 @@ const styles = StyleSheet.create({
   },
   yellow: {
     backgroundColor: 'yellow',
-  },
-  text: {
-    color: 'white',
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  gameOverContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  gameOverText: {
-    fontSize: 30,
-    marginBottom: 20,
   },
 });
 
