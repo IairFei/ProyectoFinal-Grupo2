@@ -1,56 +1,66 @@
-import { View, Text, StyleSheet, Image, Button } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import ItemProfile from '../components/ItemProfile';
+import ItemProfile from '../components/ItemProfile/index.js';
 
-
-
-
-const ProfileScreen =({contac})=>{
-  const contactemp ={
+const ProfileScreen = ({ contac }) => {
+  const contactemp = {
     nombre: 'Luca',
-    apellido:'Polti',
-    email:'lucapolti@ort.edu.ar',
-    telefono:'11-1111-1111'
-    
+    apellido: 'Polti',
+    email: 'lucapolti@ort.edu.ar',
+    telefono: '11-1111-1111'
   };
-  const navigation = useNavigation()
-  
-    const handleLogout = () => {
-      alert("Gracias por jugar")
-      navigation.replace('RegisterScreen')
-  }
 
-    return (
-        <View style={styles.container}>    
-            <ItemProfile Title="Nombre" Description={contactemp.nombre}/>
-            <ItemProfile Title="Apellido" Description={contactemp.apellido}/>
-            <ItemProfile Title="Email" Description={contactemp.email}/>
-            <ItemProfile Title="Teléfono" Description={contactemp.telefono}/>
-            <ItemProfile Title="Puesto en el Ranking" Description="1"/>
+  const navigation = useNavigation();
 
-            <Button title="cerrar cuenta" onPress={handleLogout} />
+  const handleLogout = () => {
+    alert("Gracias por jugar");
+    navigation.replace('RegisterScreen');
+  };
 
-        </View>
-   );
-}
+  return (
+    <View style={styles.container}>
+      <View style={styles.profileContainer}>
+        <Text style={styles.title}>Perfil de Usuario</Text>
+        <ItemProfile title="Nombre" description={contactemp.nombre} />
+        <ItemProfile title="Apellido" description={contactemp.apellido} />
+        <ItemProfile title="Email" description={contactemp.email} />
+        <ItemProfile title="Teléfono" description={contactemp.telefono} />
+        <ItemProfile title="Puesto en el Ranking" description="1" />
+      </View>
+      <Button title="Cerrar sesión" onPress={handleLogout} color="#1E90FF" />
+    </View>
+  );
+};
 
 export default ProfileScreen;
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'flex-start',
-    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingHorizontal: 20,
+    paddingTop: 50,
+  },
+  profileContainer: {
+    width: '100%',
     backgroundColor: '#f0f0f0',
+    padding: 20,
+    borderRadius: 10,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
-  label: {
-    fontSize: 16,
+  title: {
+    fontSize: 24,
     fontWeight: 'bold',
-    marginTop: 10,
-  },
-  value: {
-    fontSize: 16,
-    marginBottom: 10,
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#333',
   },
 });

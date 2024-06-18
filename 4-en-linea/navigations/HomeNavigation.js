@@ -2,11 +2,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import HomeScreen from "../Screens/HomeScreen";
 import GameScreen from '../Screens/GameScreen'
-import RegisterLoginScreen from "../Screens/RegisterLoginScreen";
+// import RegisterLoginScreen from "../Screens/RegisterLoginScreen";
 import RankingScreen from "../Screens/RankingScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import { Ionicons } from "@expo/vector-icons";
-import GameOverScreen from "../Screens/GameOverScreen";  
 
 const HomeNavigation = () => {
     const BottomTab = createBottomTabNavigator()
@@ -24,8 +23,6 @@ const HomeNavigation = () => {
                         iconName = focused ? 'person-circle' : 'person-circle-outline'
                     } else if (route.name === 'Ranking') {
                         iconName = focused ? 'star' : 'star-outline'
-                    } else if (route.name === 'GameOver') {
-                        iconName = focused ? 'alert-circle' : 'alert-circle-outline'
                     }
                     return <Ionicons name={iconName} size={size} color={color} />
                 }
@@ -35,7 +32,6 @@ const HomeNavigation = () => {
             <BottomTab.Screen name='GameScreen' component={GameScreen} />
             <BottomTab.Screen name='Ranking' component={RankingScreen} />
             <BottomTab.Screen name='Perfil' component={ProfileScreen} />
-            <BottomTab.Screen name='GameOver' component={GameOverScreen} /> 
         </BottomTab.Navigator>
     )
 }
