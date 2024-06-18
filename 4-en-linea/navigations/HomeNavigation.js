@@ -5,7 +5,47 @@ import GameScreen from '../Screens/GameScreen'
 // import RegisterLoginScreen from "../Screens/RegisterLoginScreen";
 import RankingScreen from "../Screens/RankingScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
+import DetailsScreen from "../Screens/DetailsScreen";
 import { Ionicons } from "@expo/vector-icons";
+import { createStackNavigator } from "@react-navigation/stack";
+
+const RankingNestedNavigation =  () =>{
+    const Stack = createStackNavigator()
+    return(
+        <Stack.Navigator>
+            <Stack.Screen 
+                    name='ranking'
+                    component={RankingScreen}
+                    options={{ headerShown: false }}
+        />
+            <Stack.Screen name = 'DetailsScreen'
+                      component={DetailsScreen}
+                      options={{headerShown: false}}
+        />
+                     
+        </Stack.Navigator>
+        
+    )
+}
+
+const HomeNestedNavigation = () =>{
+   const Stack = createStackNavigator()
+    return(
+        <Stack.Navigator>              
+            <Stack.Screen 
+                      name='Home'
+                      component={HomeScreen}
+                     options={{ headerShown: false }}
+         />  
+               <Stack.Screen 
+                      name='GameOverScreen'
+                     component={GameOverScreen}
+                     options={{ headerShown: false }}
+         />         
+        
+         </Stack.Navigator>
+     )
+ }
 
 const HomeNavigation = () => {
     const BottomTab = createBottomTabNavigator()
@@ -30,7 +70,7 @@ const HomeNavigation = () => {
         }}>
             <BottomTab.Screen name='HomeScreen' component={HomeScreen} />
             <BottomTab.Screen name='GameScreen' component={GameScreen} />
-            <BottomTab.Screen name='RankingScreen' component={RankingScreen} />
+            <BottomTab.Screen name='RankingScreen' component={RankingNestedNavigation} />
             <BottomTab.Screen name='ProfileScreeen' component={ProfileScreen} />
         </BottomTab.Navigator>
     )
