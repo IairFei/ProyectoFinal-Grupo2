@@ -4,10 +4,10 @@ import HomeScreen from "./Screens/HomeScreen";
 import RegisterLoginScreen from './Screens/RegisterLoginScreen';
 import GameOverScreen from './Screens/GameOverScreen';
 import GameScreen from './Screens/GameScreen';
-import DetailScreen from './Screens/DetailScreen'; 
 import ProfileScreen from './Screens/ProfileScreen';
 import RankingScreen from './Screens/RankingScreen';
 import HomeNavigation from "./navigations/HomeNavigation";
+import DetailsScreen from "./Screens/DetailsScreen";
 
 const Stack = createStackNavigator();
 
@@ -26,8 +26,8 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen 
-          name='DetailScreen'
-          component={DetailScreen}
+          name='DetailsScreen'
+          component={DetailsScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen 

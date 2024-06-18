@@ -76,7 +76,7 @@ export default function RegisterLoginScreen() {
                 <Text style={styles.buttonText}>Iniciar sesión</Text>
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity style={styles.button} onPress={HandleRegister}>
+              <TouchableOpacity style={styles.registerButton} onPress={HandleRegister}>
                 <Text style={styles.buttonText}>Crear cuenta</Text>
               </TouchableOpacity> 
 
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "#fff",
-    fontSize: 36,
+    fontSize: 40,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 40,
