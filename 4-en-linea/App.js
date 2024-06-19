@@ -12,25 +12,30 @@ const Stack = createStackNavigator();
 // export default function App() {
   const AppNavigator = () => {
     const { authData } = useContext(AuthContext);
-  
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='RegisterScreen'>
-        <Stack.Screen 
-          name='RegisterScreen' 
-          component={RegisterLoginScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen 
-          name='PantallaHome'
-          component={HomeNavigation}
-          options={{ headerShown: false }}
-        /> 
-        <Stack.Screen 
-          name='GameOverScreen'
-          component={GameOverScreen}
-          options={{ headerShown: false }}
-        /> 
+      <Stack.Navigator initialRouteName={authData ? 'PantallaHome' : 'RegisterScreen'}>
+        {authData ? (
+          <>
+            <Stack.Screen 
+              name='PantallaHome'
+              component={HomeNavigation}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen 
+              name='GameOverScreen'
+              component={GameOverScreen}
+              options={{ headerShown: false }}
+            />
+          </>
+        ) : (
+          <Stack.Screen 
+            name='RegisterScreen' 
+            component={RegisterLoginScreen}
+            options={{ headerShown: false }}
+          />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
