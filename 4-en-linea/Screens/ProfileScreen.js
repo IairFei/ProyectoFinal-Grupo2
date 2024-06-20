@@ -1,21 +1,23 @@
-import React from 'react';
+import { useContext } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import ItemProfile from '../components/ItemProfile/index.js';
+import { AuthContext } from "../services/AuthContext";
+import { defaultAuthData } from '../services/AutchContext/index.js';
 
 const ProfileScreen = ({ contac }) => {
+  const {authData, setAuthData } = useContext(AuthContext)
   const contactemp = {
     nombre: 'Luca',
     apellido: 'Polti',
     email: 'lucapolti@ort.edu.ar',
     telefono: '11-1111-1111'
   };
+  
 
-  const navigation = useNavigation();
 
   const handleLogout = () => {
     alert("Gracias por jugar");
-    navigation.replace('RegisterScreen');
+    setAuthData(defaultAuthData);
   };
 
   return (

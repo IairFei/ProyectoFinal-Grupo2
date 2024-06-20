@@ -7,6 +7,7 @@ const COLS = 7;
 
 const ConnectFour = () => {
   const navigation = useNavigation();
+  
   const [board, setBoard] = useState(Array.from({ length: ROWS }, () => Array(COLS).fill(null)));
   const [currentPlayer, setCurrentPlayer] = useState('red');
   const [gameOver, setGameOver] = useState(false);

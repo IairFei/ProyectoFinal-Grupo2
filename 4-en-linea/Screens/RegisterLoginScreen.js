@@ -1,5 +1,4 @@
 import {
-  Button,
   ImageBackground,
   StyleSheet,
   Text,
@@ -9,8 +8,9 @@ import {
   StatusBar
 } from "react-native";
 import fondo from "../assets/fondo.jpg";
-import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useState, useContext } from "react";
+import authService from '../services/login' 
+import { AuthContext } from "../services/AuthContext";
 
 export default function RegisterLoginScreen() {
   const [nombre, setNombre] = useState("");
@@ -18,21 +18,24 @@ export default function RegisterLoginScreen() {
   const [password, setPassword] = useState("");
   const [esLogin, setEsLogin] = useState(false);
 
-  const navigation = useNavigation();
+  const { setAuthData } = useContext(AuthContext)
 
   const HandleLogin = () => {
-    if (email.toLowerCase() === 'admin' && password.toLowerCase() === 'admin') {
-      alert(`Bienvenido ${nombre}`);
-      navigation.replace('PantallaHome');
-    } else {
-      alert('Login Fallado');
-    }
-  };
+      //TODO: Llamar al backend (o al servicio de autenticacion elegido) para obtener el token
+      authService.login(email, password)
+      .then((authData) => {
+          setAuthData(authData)
+      })
+      .catch((error) => {
+          alert(error)
+      })
+
+  }
 
   const HandleRegister = () => {
     if (email && password) {
       alert(`Bienvenido ${nombre}`);
-      navigation.replace('PantallaHome');
+      setAuthData(authData);
     } else {
       alert('Registro Fallado');
     }
