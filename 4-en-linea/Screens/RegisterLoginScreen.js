@@ -5,7 +5,8 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
+  Alert
 } from "react-native";
 import fondo from "../assets/fondo.jpg";
 import { useState, useContext } from "react";
@@ -40,10 +41,10 @@ export default function RegisterLoginScreen() {
           alert(`Bienvenido ${nombre}`);
         })
         .catch(() => {
-          alert('Error al registrar. Por favor, inténtelo de nuevo.');
+          Alert.alert('','Error al registrar. Por favor, inténtelo de nuevo.');
         });
     } else {
-      alert('Por favor, complete todos los campos.');
+      Alert.alert('','Por favor, complete todos los campos.');
     }
   };
 
