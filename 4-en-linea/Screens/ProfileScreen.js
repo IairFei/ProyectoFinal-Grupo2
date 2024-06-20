@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import ItemProfile from '../components/ItemProfile/index.js';
 import { AuthContext } from "../services/AuthContext";
 import { defaultAuthData } from '../services/AutchContext/index.js';
@@ -16,7 +16,7 @@ const ProfileScreen = ({ contac }) => {
 
 
   const handleLogout = () => {
-    alert("Gracias por jugar");
+    Alert.alert('',"Gracias por jugar");
     setAuthData(defaultAuthData);
   };
 
