@@ -8,6 +8,8 @@ import ProfileScreen from "../Screens/ProfileScreen";
 import DetailsScreen from "../Screens/DetailsScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
+import GameOverScreen from "../Screens/GameOverScreen";
+import { NavigationContainer } from "@react-navigation/native";
 
 const RankingNestedNavigation =  () =>{
     const Stack = createStackNavigator()
@@ -33,16 +35,21 @@ const HomeNestedNavigation = () =>{
     return(
         <Stack.Navigator>              
             <Stack.Screen 
+            
                       name='Home'
                       component={HomeScreen}
                      options={{ headerShown: false }}
          />  
-               <Stack.Screen 
+            <Stack.Screen 
                       name='GameOverScreen'
                      component={GameOverScreen}
                      options={{ headerShown: false }}
          />         
-        
+            <Stack.Screen 
+                      name='GameScreen'
+                     component={GameScreen}
+                     options={{ headerShown: false }}
+         />   
          </Stack.Navigator>
      )
  }
@@ -51,7 +58,9 @@ const HomeNavigation = () => {
     const BottomTab = createBottomTabNavigator()
 
     return (
-        <BottomTab.Navigator screenOptions={({ route }) => {
+        <NavigationContainer>
+    
+    <BottomTab.Navigator screenOptions={({ route }) => {
             return {
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName
@@ -59,7 +68,7 @@ const HomeNavigation = () => {
                         iconName = focused ? 'home' : 'home-outline'
                     } else if (route.name === 'GameScreen') {
                         iconName = focused ? 'game-controller' : 'game-controller-outline'
-                    } else if (route.name === 'ProfileScreeen') {
+                    } else if (route.name === 'ProfileScreen') {
                         iconName = focused ? 'person-circle' : 'person-circle-outline'
                     } else if (route.name === 'RankingScreen') {
                         iconName = focused ? 'star' : 'star-outline'
@@ -68,11 +77,13 @@ const HomeNavigation = () => {
                 }
             }
         }}>
-            <BottomTab.Screen name='HomeScreen' component={HomeScreen} />
-            <BottomTab.Screen name='GameScreen' component={GameScreen} />
+            <BottomTab.Screen name='HomeScreen' component={HomeNestedNavigation} />
             <BottomTab.Screen name='RankingScreen' component={RankingNestedNavigation} />
-            <BottomTab.Screen name='ProfileScreeen' component={ProfileScreen} />
+            <BottomTab.Screen name='ProfileScreen' component={ProfileScreen} />
         </BottomTab.Navigator>
+
+        </NavigationContainer>  
+
     )
 }
 

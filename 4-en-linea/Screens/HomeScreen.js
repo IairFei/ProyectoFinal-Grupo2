@@ -6,11 +6,11 @@ export default function HomeScreen() {
   const navigation = useNavigation();
 
   const startGame = () => {
-    navigation.navigate('GameScreen');
+    navigation.replace('GameScreen');
   };
 
   const viewProfile = () => {
-    navigation.navigate('ProfileScreeen');
+    navigation.navigate('ProfileScreen');
   };
 
   return (

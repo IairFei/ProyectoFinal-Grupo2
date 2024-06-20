@@ -10,11 +10,11 @@ export default function GameOverScreen() {
   const { winner } = route.params;
 
   const irAInicio = () => {
-    navigation.replace('PantallaHome');
+    navigation.replace('Home');
   };
 
   const reiniciarJuego = () => {
-    navigation.replace('PantallaHome', { screen: 'GameScreen' });
+    navigation.replace( 'GameScreen' );
   };
 
   return (
