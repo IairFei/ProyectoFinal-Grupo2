@@ -33,11 +33,17 @@ export default function RegisterLoginScreen() {
   }
 
   const HandleRegister = () => {
-    if (email && password) {
-      alert(`Bienvenido ${nombre}`);
-      setAuthData(authData);
+    if (email && password && nombre) {
+      authService.register(email, password, nombre)
+        .then((authData) => {
+          setAuthData(authData);
+          alert(`Bienvenido ${nombre}`);
+        })
+        .catch(() => {
+          alert('Error al registrar. Por favor, inténtelo de nuevo.');
+        });
     } else {
-      alert('Registro Fallado');
+      alert('Por favor, complete todos los campos.');
     }
   };
 

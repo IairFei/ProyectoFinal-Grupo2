@@ -22,11 +22,28 @@ const login = (email, password) => {
     });
 }
 
+const register = (email, password, fullName) => {
+  return new Promise((resolve, reject) => {
+    const authData = {
+      access_token: '123456789',
+      expires_in: 3600,
+      profile: {
+        email,
+        fullName,
+        role: 'user'
+      }
+    };
+    AsyncStorage.storeData('authData', authData);
+    return resolve(authData);
+  });
+};
+
 const logout = async () => {
   await AsyncStorage.clearAll();
 }
 
 export default {
   login,
-  logout
+  logout,
+  register,
 }
