@@ -9,6 +9,7 @@ import DetailsScreen from "../Screens/DetailsScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
 import GameOverScreen from "../Screens/GameOverScreen";
+import LobbyScreen from '../Screens/LobbyScreen'
 import { NavigationContainer } from "@react-navigation/native";
 
 const RankingNestedNavigation =  () =>{
@@ -50,6 +51,11 @@ const HomeNestedNavigation = () =>{
                      component={GameScreen}
                      options={{ headerShown: false }}
          />   
+                        <Stack.Screen 
+                      name='LobbyScreen'
+                     component={LobbyScreen}
+                     options={{ headerShown: false }}
+         />
          </Stack.Navigator>
      )
  }

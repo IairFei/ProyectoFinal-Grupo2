@@ -1,30 +1,48 @@
 import { useNavigation } from "@react-navigation/native";
-import { Text, View, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, ImageBackground, StatusBar } from "react-native";
 import fondo from "../assets/fondo.jpg";
+import { useState, useEffect } from "react";
+import contactService from '../services/contacts.js'
+import ContactSrollView from "../components/ContactSrollView/index.js"
 
-export default function HomeScreen() {
+
+
+
+export default function LobbyScreen() {
   const navigation = useNavigation();
 
+  const [contacts, setContacts] = useState([])
+
+  useEffect(() =>{
+      contactService.getContacts().then(contacts =>{
+          setContacts(contacts)
+      })
+      .catch(err => {
+          console.log(err)
+      })
+  }, [])
+
   const startGame = () => {
-    navigation.replace('LobbyScreen');
+    navigation.replace('GameScreen');
   };
 
-  const viewProfile = () => {
-    navigation.navigate('ProfileScreen');
-  };
+
 
   return (
     <ImageBackground source={fondo} style={styles.background}>
       <View style={styles.overlay} />
       <View style={styles.container}>
         <Text style={styles.title}>Bienvenido al Juego</Text>
+         <View style={styles.scrollContainer} >
+        <Text style={styles.subtitle}>Salas disponibles</Text>
+            <ContactSrollView contacts={contacts} />
+            
+        </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={startGame}>
-            <Text style={styles.buttonText}>Iniciar Juego</Text>
+            <Text style={styles.buttonText}>Crear sala</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={viewProfile}>
-            <Text style={styles.buttonText}>Ver Perfil</Text>
-          </TouchableOpacity>
+
         </View>
       </View>
     </ImageBackground>
@@ -51,7 +69,7 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 40,
+    marginBottom: 10,
     backgroundColor: "rgba(0, 0, 0, 0.7)",
     padding: 10,
     borderRadius: 10,
@@ -77,5 +95,22 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  scrollContainer: {
+    flex: 1,
+    width: "100%",
+    marginVertical: 10,
+    padding: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    borderRadius: 10,
+  },
+  subtitle: {
+    color: "#fff",
+    fontSize: 24,
+    textAlign: "center",
+    marginBottom: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    padding: 5,
+    borderRadius: 10,
   },
 });
