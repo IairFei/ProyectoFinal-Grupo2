@@ -1,48 +1,83 @@
 import { useNavigation } from "@react-navigation/native";
-import { Text, View, StyleSheet, TouchableOpacity, ImageBackground, StatusBar } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ImageBackground,
+  Alert,
+} from "react-native";
 import fondo from "../assets/fondo.jpg";
 import { useState, useEffect } from "react";
-import contactService from '../services/contacts.js'
-import ContactSrollView from "../components/ContactSrollView/index.js"
-
-
-
+import ContactSrollView from "../components/ContactSrollView/index.js";
+import socket from "../services/socket.js";
 
 export default function LobbyScreen() {
+  const [rooms, setRooms] = useState([]);
+  const [newRoomName, setNewRoomName] = useState('');
   const navigation = useNavigation();
 
-  const [contacts, setContacts] = useState([])
 
-  useEffect(() =>{
-      contactService.getContacts().then(contacts =>{
-          setContacts(contacts)
-      })
-      .catch(err => {
-          console.log(err)
-      })
-  }, [])
+//  const [contacts, setContacts] = useState([]);
 
-  const startGame = () => {
-    navigation.replace('GameScreen');
+  //  useEffect(() =>{
+  //      contactService.getContacts().then(contacts =>{
+  //          setContacts(contacts)
+  //      })
+  //      .catch(err => {
+  //          console.log(err)
+  //      })
+  //  }, [])
+
+  useEffect(() => {
+    socket.on("updateRooms", (updatedRooms) => {
+      console.log("salas actualizadas")
+      setRooms(updatedRooms);
+    });
+
+    socket.emit("joinLobby");
+
+    return () => {
+      socket.emit("leaveLobby");
+      socket.off("updateRooms");
+    };
+  }, []);
+
+   const createRoom = () => {
+    if (newRoomName.trim() !== '') {
+      socket.emit('createRoom', newRoomName);
+      setNewRoomName('');
+    } else {
+      Alert.alert('Error', 'El nombre de la sala no puede estar vacío');
+    }
   };
 
-
+  const joinRoom = (roomName) => {
+    socket.emit("joinRoom", roomName);
+    navigation.replace("GameScreen", { roomName });
+  };
 
   return (
     <ImageBackground source={fondo} style={styles.background}>
       <View style={styles.overlay} />
       <View style={styles.container}>
         <Text style={styles.title}>Bienvenido al Juego</Text>
-         <View style={styles.scrollContainer} >
-        <Text style={styles.subtitle}>Salas disponibles</Text>
-            <ContactSrollView contacts={contacts} />
-            
+        <View style={styles.scrollContainer}>
+          <Text style={styles.subtitle}>Salas disponibles</Text>
+          {Object.keys(rooms).map((roomName) => (
+            <TouchableOpacity
+              key={roomName}
+              style={styles.roomButton}
+              onPress={() => joinRoom(roomName)}
+            >
+              <Text style={styles.roomText}>{roomName}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={startGame}>
+          <TouchableOpacity style={styles.button} onPress={createRoom}>
             <Text style={styles.buttonText}>Crear sala</Text>
           </TouchableOpacity>
-
         </View>
       </View>
     </ImageBackground>
@@ -85,7 +120,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 10,
     width: "80%",
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
