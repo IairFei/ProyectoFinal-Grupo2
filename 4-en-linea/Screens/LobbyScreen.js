@@ -1,15 +1,7 @@
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, ImageBackground, Alert } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ImageBackground,
-  Alert,
-} from "react-native";
 import fondo from "../assets/fondo.jpg";
-import { useState, useEffect } from "react";
-import ContactSrollView from "../components/ContactSrollView/index.js";
 import socket from "../services/socket.js";
 
 export default function LobbyScreen() {
@@ -17,33 +9,36 @@ export default function LobbyScreen() {
   const [newRoomName, setNewRoomName] = useState('');
   const navigation = useNavigation();
 
-
-//  const [contacts, setContacts] = useState([]);
-
-  //  useEffect(() =>{
-  //      contactService.getContacts().then(contacts =>{
-  //          setContacts(contacts)
-  //      })
-  //      .catch(err => {
-  //          console.log(err)
-  //      })
-  //  }, [])
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [fooEvents, setFooEvents] = useState([]);
 
   useEffect(() => {
-    socket.on("updateRooms", (updatedRooms) => {
-      console.log("salas actualizadas")
-      setRooms(updatedRooms);
-    });
+    function onConnect() {
+      setIsConnected(true);
+      socket.emit('joinLobby'); // Unirse al lobby cuando se conecta
+    }
 
-    socket.emit("joinLobby");
+    function onDisconnect() {
+      setIsConnected(false);
+      setRooms([]); // Limpiar la lista de salas al desconectar
+    }
+
+    function onUpdateRooms(updatedRooms) {
+      setRooms(updatedRooms);
+    }
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+    socket.on('updateRooms', onUpdateRooms);
 
     return () => {
-      socket.emit("leaveLobby");
-      socket.off("updateRooms");
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+      socket.off('updateRooms', onUpdateRooms);
     };
   }, []);
 
-   const createRoom = () => {
+  const createRoom = () => {
     if (newRoomName.trim() !== '') {
       socket.emit('createRoom', newRoomName);
       setNewRoomName('');
@@ -64,7 +59,7 @@ export default function LobbyScreen() {
         <Text style={styles.title}>Bienvenido al Juego</Text>
         <View style={styles.scrollContainer}>
           <Text style={styles.subtitle}>Salas disponibles</Text>
-          {Object.keys(rooms).map((roomName) => (
+          {rooms.map((roomName) => (
             <TouchableOpacity
               key={roomName}
               style={styles.roomButton}
@@ -147,5 +142,17 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.7)",
     padding: 5,
     borderRadius: 10,
+  },
+  roomButton: {
+    backgroundColor: "#4682B4",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  roomText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });

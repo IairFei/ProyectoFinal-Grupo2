@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { socket } from '../socket';
+import { socket } from '../services/socket';
 
 export function MyForm() {
   const [value, setValue] = useState('');
