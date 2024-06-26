@@ -24,7 +24,7 @@ const ProfileScreen = ({ contac }) => {
     <View style={styles.container}>
       <View style={styles.profileContainer}>
         <Text style={styles.title}>Perfil de Usuario</Text>
-        <ItemProfile title="Nombre" description={authData.profile.fullname} />
+        <ItemProfile title="Nombre" description={authData.profile.name} />
         <ItemProfile title="Email" description={authData.profile.email} />
         <ItemProfile title="Teléfono" description={authData.access_token} />
         <ItemProfile title="Puesto en el Ranking" description="1" />

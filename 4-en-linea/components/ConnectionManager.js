@@ -1,19 +1,29 @@
+// src/components/ConnectionManager.js
 import React from 'react';
-import { socket } from '../services/socket';
+import { View, Button, StyleSheet } from 'react-native';
+import socket from '../services/socket';
 
 export function ConnectionManager() {
-  function connect() {
+  const connect = () => {
     socket.connect();
-  }
+  };
 
-  function disconnect() {
+  const disconnect = () => {
     socket.disconnect();
-  }
+  };
 
   return (
-    <>
-      <button onClick={ connect }>Connect</button>
-      <button onClick={ disconnect }>Disconnect</button>
-    </>
+    <View style={styles.container}>
+      <Button title="Connect" onPress={connect} />
+      <Button title="Disconnect" onPress={disconnect} />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+  },
+});

@@ -51,7 +51,7 @@ const HomeNestedNavigation = () =>{
                      component={GameScreen}
                      options={{ headerShown: false }}
          />   
-                        <Stack.Screen 
+            <Stack.Screen 
                       name='LobbyScreen'
                      component={LobbyScreen}
                      options={{ headerShown: false }}

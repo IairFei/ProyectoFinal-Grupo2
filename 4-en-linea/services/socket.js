@@ -1,7 +1,23 @@
-import { io } from 'socket.io-client';
+import io  from 'socket.io-client';
 
-// Crear una instancia de Socket.io y conectarse al servidor backend
-const socket = io('http://192.168.0.12:3000/');
+let socket
 
-export default socket;
+export const conecctSocket = () =>{
+    socket = io('https://04a2-190-19-190-107.ngrok-free.app');
+    return socket
+}
+export const getSocket = () =>{
+    if(!socket){
+        throw new Error('Socket no conectado')
+    }
+    return socket
+}
+
+export const disconnectSocket = () =>{
+    if(socket){
+        socket.disconnect()
+    }
+}
+
+
 

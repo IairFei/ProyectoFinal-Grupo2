@@ -1,5 +1,5 @@
 import { Card } from "@rneui/base";
-import { View, Text, Image } from "react-native";
+import { View, Image } from "react-native";
 
 export default ({contact}) => {
   return (

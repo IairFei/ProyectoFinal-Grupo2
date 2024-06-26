@@ -1,54 +1,72 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ImageBackground, Alert } from 'react-native';
+import React, { useState, useEffect } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ImageBackground,
+  Alert,
+  TextInput,
+  ScrollView,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import fondo from "../assets/fondo.jpg";
-import socket from "../services/socket.js";
+import {conecctSocket, getSocket, disconnectSocket} from '../services/socket'
+
 
 export default function LobbyScreen() {
   const [rooms, setRooms] = useState([]);
-  const [newRoomName, setNewRoomName] = useState('');
+  const [newRoomName, setNewRoomName] = useState("");
   const navigation = useNavigation();
-
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  const [fooEvents, setFooEvents] = useState([]);
-
+  const [isConnected, setIsConnected] = useState(false);
+  
   useEffect(() => {
+
+    const socket = conecctSocket()
+
     function onConnect() {
+      console.log("Connected");
       setIsConnected(true);
-      socket.emit('joinLobby'); // Unirse al lobby cuando se conecta
+      socket.emit("joinLobby"); // Unirse al lobby cuando se conecta
     }
 
     function onDisconnect() {
+      console.log("Disconnected")
       setIsConnected(false);
       setRooms([]); // Limpiar la lista de salas al desconectar
     }
 
     function onUpdateRooms(updatedRooms) {
+      console.log("Update")
       setRooms(updatedRooms);
     }
 
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
+     socket.on('connect', onConnect);
+     socket.on('disconnect', onDisconnect);
     socket.on('updateRooms', onUpdateRooms);
 
     return () => {
-      socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
-      socket.off('updateRooms', onUpdateRooms);
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+      socket.off("updateRooms", onUpdateRooms);
+      //disconnectSocket()
     };
   }, []);
 
   const createRoom = () => {
-    if (newRoomName.trim() !== '') {
-      socket.emit('createRoom', newRoomName);
-      setNewRoomName('');
+    if (newRoomName.trim() !== "") {
+      const socket = getSocket()
+      socket.emit("createRoom", newRoomName);
+      setNewRoomName("");
     } else {
-      Alert.alert('Error', 'El nombre de la sala no puede estar vacío');
+      Alert.alert("Error", "El nombre de la sala no puede estar vacío");
     }
   };
 
   const joinRoom = (roomName) => {
+    const socket = getSocket()
     socket.emit("joinRoom", roomName);
+    console.log(roomName)
     navigation.replace("GameScreen", { roomName });
   };
 
@@ -59,16 +77,25 @@ export default function LobbyScreen() {
         <Text style={styles.title}>Bienvenido al Juego</Text>
         <View style={styles.scrollContainer}>
           <Text style={styles.subtitle}>Salas disponibles</Text>
-          {rooms.map((roomName) => (
-            <TouchableOpacity
-              key={roomName}
-              style={styles.roomButton}
-              onPress={() => joinRoom(roomName)}
-            >
-              <Text style={styles.roomText}>{roomName}</Text>
-            </TouchableOpacity>
-          ))}
+          <ScrollView>
+            {rooms.map((room) => (
+              <TouchableOpacity
+                key={room.roomName}
+                style={styles.roomButton}
+                onPress={() => joinRoom(room.roomName)}
+              >
+                <Text style={styles.roomText}>{room.roomName}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Nombre de la sala"
+          placeholderTextColor="#aaa"
+          value={newRoomName}
+          onChangeText={setNewRoomName}
+        />
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={createRoom}>
             <Text style={styles.buttonText}>Crear sala</Text>
@@ -150,9 +177,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 10,
   },
-  roomText: {
+  input: {
+    height: 50,
+    borderColor: "#fff",
+    borderWidth: 1,
+    borderRadius: 25,
+    marginBottom: 20,
+    paddingHorizontal: 20,
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
     color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
   },
 });

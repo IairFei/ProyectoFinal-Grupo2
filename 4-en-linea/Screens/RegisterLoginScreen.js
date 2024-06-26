@@ -42,6 +42,7 @@ export default function RegisterLoginScreen() {
         })
         .catch(() => {
           Alert.alert('','Error al registrar. Por favor, inténtelo de nuevo.');
+          console.log("En registerLoggin")
         });
     } else {
       Alert.alert('','Por favor, complete todos los campos.');

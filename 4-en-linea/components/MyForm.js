@@ -1,24 +1,38 @@
+// src/components/MyForm.js
 import React, { useState } from 'react';
-import { socket } from '../services/socket';
+import { View, TextInput, Button, StyleSheet } from 'react-native';
+import socket from '../services/socket';
 
 export function MyForm() {
-  const [value, setValue] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [input, setInput] = useState('');
 
-  function onSubmit(event) {
-    event.preventDefault();
-    setIsLoading(true);
-
-    socket.timeout(5000).emit('create-something', value, () => {
-      setIsLoading(false);
-    });
-  }
+  const handleSubmit = () => {
+    socket.emit('foo', input);
+    setInput('');
+  };
 
   return (
-    <form onSubmit={ onSubmit }>
-      <input onChange={ e => setValue(e.target.value) } />
-
-      <button type="submit" disabled={ isLoading }>Submit</button>
-    </form>
+    <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter something"
+        value={input}
+        onChangeText={setInput}
+      />
+      <Button title="Submit" onPress={handleSubmit} />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 10,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
+});
