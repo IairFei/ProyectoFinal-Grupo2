@@ -1,12 +1,4 @@
 import AsyncStorage from "./AsyncStorage";
-import bcrypt from "bcrypt";
-
-
-const hashPassword = async (password) => {
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-  return hashedPassword;
-}
 
 const login = (email, password) => {
   return new Promise((resolve, reject) => {
@@ -32,7 +24,6 @@ const login = (email, password) => {
 
 const register = async (email, password, fullName) => {
   try {
-    const hashedPassword = await hashPassword(password);
     const authData = {
       access_token: '123456789',
       expires_in: 3600,
@@ -41,7 +32,7 @@ const register = async (email, password, fullName) => {
         fullName,
         role: 'user'
       },
-      hashedPassword
+
     };
     await AsyncStorage.storeData('authData', authData);
     return Promise.resolve(authData);
