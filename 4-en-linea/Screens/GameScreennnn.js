@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, Button, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import {conecctSocket, getSocket, disconnectSocket} from '../services/socket'
+import { getSocket } from '../services/socket';
 
 const ROWS = 6;
 const COLS = 7;
 
-const ConnectFour = () => {
+const ConnectFour = ({route}) => {
   const navigation = useNavigation();
-  const route = useRoute();
-  const { roomName } = route.params;
+  const { roomName } = route.params
 
+  
   const [board, setBoard] = useState(Array.from({ length: ROWS }, () => Array(COLS).fill(null)));
   const [currentPlayer, setCurrentPlayer] = useState('red');
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState(null);
 
-  useEffect(() => {
-    const socket = conecctSocket();
+  const socket = getSocket()
 
+  useEffect(() => {
     socket.emit('joinRoom', roomName);
 
     socket.on('updateBoard', (updatedBoard) => {
@@ -28,9 +28,10 @@ const ConnectFour = () => {
 
     return () => {
       socket.emit('leaveRoom', roomName);
-      disconnectSocket();
+      socket.off('updateBoard');
     };
   }, [roomName]);
+
 
   const handlePress = (row, col) => {
     let validateRow = findValidateRow(col);
@@ -40,9 +41,8 @@ const ConnectFour = () => {
     const updatedBoard = [...board];
     updatedBoard[validateRow][col] = currentPlayer;
     setBoard(updatedBoard);
-    const nextPlayer = currentPlayer === 'red' ? 'yellow' : 'red';
-    const socket = getSocket();
-    socket.emit('updateBoard', { roomName, board: updatedBoard, currentPlayer: nextPlayer });
+    socket.emit('updateBoard', { roomName, board: updatedBoard, currentPlayer: currentPlayer === 'red' ? 'yellow' : 'red' });
+
   };
 
   const findValidateRow = (col) => {
@@ -55,13 +55,13 @@ const ConnectFour = () => {
   };
 
   const handleReset = () => {
-    const newBoard = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
-    setBoard(newBoard);
+    const newBoard = (Array.from({ length: ROWS }, () => Array(COLS).fill(null)));
+    setBoard(newBoard)
     setCurrentPlayer('red');
     setWinner(null);
     setGameOver(false);
-    const socket = getSocket();
     socket.emit('updateBoard', { roomName, board: newBoard, currentPlayer: 'red' });
+
   };
 
   useEffect(() => {

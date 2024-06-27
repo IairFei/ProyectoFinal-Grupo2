@@ -11,20 +11,7 @@ export default ({ rooms }) =>{
     //const sortedContacts = contacts.sort((a, b) => b.points - a.points)
 
     return(
-        <View style={styles.scrollContainer}>
-          <Text style={styles.subtitle}>Salas disponibles</Text>
-          <ScrollView>
-            {rooms.map((room) => (
-              <TouchableOpacity
-                key={room.roomName}
-                style={styles.roomButton}
-                onPress={() => joinRoom(room.roomName)}
-              >
-                <Text style={styles.roomText}>{room.roomName}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
+      <></>
     )
 }
 

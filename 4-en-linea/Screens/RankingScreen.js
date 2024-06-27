@@ -1,4 +1,4 @@
-import { View, Text, Image, Button} from "react-native"
+import { View, Text, Image, Button, StyleSheet} from "react-native"
 import contactService from '../services/contacts.js'
 import { useEffect, useState , useContext} from "react"
 import { StatusBar } from "expo-status-bar"
@@ -24,14 +24,30 @@ const RankingScreen = () => {
         });
     }, []);
 
-
     return (
+        <View style={styles.container} >
+          <StatusBar style="auto" />
+          <Text style={styles.title} >Mejores jugadores</Text>
+        </View>,
         <View>
-            <StatusBar style="auto" />
-            <Text>Mejores jugadores</Text>
-            <ContactSrollView contacts={contacts} />
+            <ContactSrollView  contacts={contacts} />
         </View>
-    );
-};
+        
+      );
+    };
 
-export default RankingScreen;
+    const styles = StyleSheet.create({
+      container: {
+       justifyContent: "center",
+       alignItems:"center",
+       flex:1,
+        backgroundColor: '#fff',
+      },
+      title: {
+        fontSize: 28,
+        fontWeight: 'bold',
+        marginBottom: 20, 
+      },
+    });
+
+export default RankingScreen; 
