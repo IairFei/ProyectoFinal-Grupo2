@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import ItemProfile from '../components/ItemProfile/index.js';
+
 // import { AuthContext } from "../services/AuthContext";
 // import { defaultAuthData } from '../services/AutchContext/index.js';
 import Authcontext , {defaultAuthData} from '../services/AutchContext'
@@ -11,16 +12,6 @@ import AsyncStorage from '../services/AsyncStorage';
 
 const ProfileScreen = () => {
   const {authData, setAuthData } = useContext(Authcontext)
-
-
-  // const contactemp = {
-  //   nombre: 'Luca',
-  //   apellido: 'Polti',
-  //   email: 'lucapolti@ort.edu.ar',
-  //   telefono: '11-1111-1111'
-  // };
-  
-
 
   const handleLogout = () => {
     Alert.alert('',"Gracias por jugar");
@@ -49,7 +40,6 @@ const ProfileScreen = () => {
         {/* <ItemProfile title="Teléfono" description={authData.access_token} /> */}
         <ItemProfile title="Puesto en el Ranking" description="1" /> 
       </View>
-      <Button title="Cerrar sesión" onPress={handleLogout} color="#1E90FF" />
     </View>
   );
 };

@@ -54,6 +54,7 @@ const BASE_URL = 'https://71cf-190-19-190-107.ngrok-free.app/api/auth/'; // Aseg
 
 const login = (email, password) => {
   return new Promise((resolve, reject) => {
+
     fetch(`${BASE_URL}login/`, {
       method: 'POST',
       headers: {
@@ -105,6 +106,7 @@ const register = (email, password, name) => {
       reject(error.message);
     });
   });
+
 };
 
 const logout = async () => {
