@@ -17,6 +17,7 @@ console.log(err);
 });
 }, [id]);
 
+
 return (
 <View style={styles.container}>
 <StatusBar style="auto" />

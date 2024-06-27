@@ -1,11 +1,11 @@
 import { Card } from "@rneui/base";
-import { View, Text, Image } from "react-native";
+import { View, Image } from "react-native";
 
 export default ({contact}) => {
   return (
     <View>
       <Card>
-        <Card.Title>{contact.fullName}</Card.Title>
+        <Card.Title>{contact.name}</Card.Title>
         <Card.Divider />
         <View style={{ position: "relative", alignItems: "center" }}>
           <Image
