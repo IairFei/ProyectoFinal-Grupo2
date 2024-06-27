@@ -3,17 +3,8 @@ import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import ItemProfile from '../components/ItemProfile/index.js';
 import { AuthContext } from "../services/AuthContext";
 
-const ProfileScreen = ({ contac }) => {
+const ProfileScreen = () => {
   const {authData, setAuthData } = useContext(AuthContext)
-  const contactemp = {
-    nombre: 'Luca',
-    apellido: 'Polti',
-    email: 'lucapolti@ort.edu.ar',
-    telefono: '11-1111-1111'
-  };
-  
-
-
 
   return (
     <View style={styles.container}>
