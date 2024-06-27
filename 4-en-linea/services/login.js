@@ -1,6 +1,6 @@
 import AsyncStorage from "./AsyncStorage";
 
-const BASE_URL = 'https://71cf-190-19-190-107.ngrok-free.app/api/auth/'; // Asegúrate de que esta URL apunte correctamente a tu backend
+const BASE_URL = 'https://71cf-190-19-190-107.ngrok-free.app/api/auth/';
 
 const login = (email, password) => {
   return new Promise((resolve, reject) => {

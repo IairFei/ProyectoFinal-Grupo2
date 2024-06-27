@@ -11,6 +11,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import GameOverScreen from "../Screens/GameOverScreen";
 import LobbyScreen from '../Screens/LobbyScreen'
 import { NavigationContainer } from "@react-navigation/native";
+import SettingsScreen from "../Screens/SettingsScreen";
+
 
 const RankingNestedNavigation =  () =>{
     const Stack = createStackNavigator()
@@ -78,6 +80,8 @@ const HomeNavigation = () => {
                         iconName = focused ? 'person-circle' : 'person-circle-outline'
                     } else if (route.name === 'RankingScreen') {
                         iconName = focused ? 'star' : 'star-outline'
+                    } else if (route.name === 'SettingsScreen') {
+                        iconName = focused ? 'settings' : 'settings-outline'
                     }
                     return <Ionicons name={iconName} size={size} color={color} />
                 }
@@ -86,6 +90,7 @@ const HomeNavigation = () => {
             <BottomTab.Screen name='HomeScreen' component={HomeNestedNavigation} />
             <BottomTab.Screen name='RankingScreen' component={RankingNestedNavigation} />
             <BottomTab.Screen name='ProfileScreen' component={ProfileScreen} />
+            <BottomTab.Screen name='SettingsScreen' component={SettingsScreen} />
         </BottomTab.Navigator>
 
         </NavigationContainer>  
