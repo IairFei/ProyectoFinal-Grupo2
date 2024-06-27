@@ -6,50 +6,88 @@ import {
   TouchableOpacity,
   ImageBackground,
   TextInput,
-  ScrollView,
-  Alert
+  ScrollView
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import fondo from "../assets/fondo.jpg";
-import roomService from '../services/rooms'
+import RoomsScrollView from "../components/RoomsScrollView";
+import {conecctSocket, getSocket, disconnectSocket} from '../services/socket'
+import roomService from '../services/rooms.js'
+
+
 
 export default function LobbyScreen() {
   const [rooms, setRooms] = useState([]);
   const [newRoomName, setNewRoomName] = useState("");
   const navigation = useNavigation();
-
+  const [isConnected, setIsConnected] = useState(false);
+  
   useEffect(() => {
-        roomService.getRooms().then(response => {
-      console.log('Response:', response);
-      // Accede a payload y verifica si es un array
-      if (response.status === "success" && Array.isArray(response.payload)) {
-          setRooms(response.payload);
-      } else {
-          console.error('Expected an array in payload but got:', typeof response.payload);
-      }
-  })
-  .catch(err => {
-      console.log(err);
-  })
-    // Aquí puedes llamar a tu servicio para obtener las salas si las tienes almacenadas en tu backend.
-    // Ejemplo:
-    // roomService.getRooms().then(response => setRooms(response.payload)).catch(err => console.error(err));
+
+    const socket = conecctSocket()
+
+    function onConnect() {
+      console.log("Connected");
+      setIsConnected(true);
+      socket.emit("joinLobby"); // Unirse al lobby cuando se conecta
+    }
+
+    function onDisconnect() {
+      console.log("Disconnected")
+      setIsConnected(false);
+      setRooms([]); // Limpiar la lista de salas al desconectar
+    }
+
+    function onUpdateRooms(updatedRooms) {
+      console.log("Update")
+      setRooms(updatedRooms);
+    }
+
+     socket.on('connect', onConnect);
+     socket.on('disconnect', onDisconnect);
+    socket.on('updateRooms', onUpdateRooms);
+
+  //   roomService.getRooms().then(response => {
+  //     console.log('Response:', response);
+  //     // Accede a payload y verifica si es un array
+  //     if (response.status === "success" && Array.isArray(response.payload)) {
+  //         setRooms(response.payload);
+  //     } else {
+  //         console.error('Expected an array in payload but got:', typeof response.payload);
+  //     }
+  // })
+  // .catch(err => {
+  //     console.log(err);
+  // })
+
+    return () => {
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+      socket.off("updateRooms", onUpdateRooms);
+
+    };
+
+
   }, []);
 
   const createRoom = () => {
     if (newRoomName.trim() !== "") {
-      // Aquí puedes llamar a tu backend para crear una nueva sala.
-      // Ejemplo:
-      // roomService.createRoom(newRoomName).then(response => {
-      //   setRooms([...rooms, response.payload]);
-      // }).catch(err => console.error(err));
+      const socket = getSocket()
+      socket.emit("createRoom", newRoomName);
       setNewRoomName("");
     } else {
       Alert.alert("Error", "El nombre de la sala no puede estar vacío");
     }
   };
 
+  // const createRoom = ()=>{
+  //   roomService.createRoom(newRoomName)
+  // }
+
   const joinRoom = (roomName) => {
+    const socket = getSocket()
+    socket.emit("joinRoom", roomName);
+    console.log(roomName)
     navigation.replace("GameScreen", { roomName });
   };
 
@@ -58,16 +96,16 @@ export default function LobbyScreen() {
       <View style={styles.overlay} />
       <View style={styles.container}>
         <Text style={styles.title}>Bienvenido al Juego</Text>
-        <Text style={styles.subtitle}>Salas disponibles</Text>
-        <View style={styles.scrollContainer}>
+          <Text style={styles.subtitle}>Salas disponibles</Text>
+          <View style={styles.scrollContainer}>
           <ScrollView>
             {rooms.map((room, index) => (
               <TouchableOpacity
                 key={index}
                 style={styles.roomButton}
-                onPress={() => joinRoom(room.room_id)}
+                onPress={() => joinRoom(room.roomName)}
               >
-                <Text style={styles.roomText}>{room.room_id}</Text>
+                <Text style={styles.roomText}>{room.roomName}</Text>
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -169,10 +207,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: "rgba(255, 255, 255, 0.2)",
     color: "#fff",
-  },
-  roomText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
   },
 });
