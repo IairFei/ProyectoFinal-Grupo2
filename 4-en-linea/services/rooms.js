@@ -50,32 +50,30 @@ const getRoomsById = (id) => {
     });
 };
 
-const createRoom = (nombre) => {
-    return new Promise((resolve, reject) => {
-  
-      fetch(`${BASE_URL}rooms/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ nombre })
-      })
-      .then(res => {
-        if (res.ok) {
+const createRoom = () => {
+  return new Promise((resolve, reject) => {
+    fetch(`${BASE_URL}api/rooms/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => {
+        console.log(typeof res, res)
+        if (res.status === 201) {
           return res.json();
         } else {
           throw new Error('No se pudo crear la sala');
         }
       })
-      .then(authData => {
-        AsyncStorage.storeData('authData', authData);
-        resolve(authData);
+      .then((roomData) => {
+        resolve(roomData); 
       })
-      .catch(error => {
-        reject(error.message);
+      .catch((error) => {
+        reject(error.message); 
       });
-    });
-  };
+  });
+};
 
 
 export default {
