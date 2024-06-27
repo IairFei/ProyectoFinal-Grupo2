@@ -2,11 +2,8 @@ import { View, Text, Image, Button} from "react-native"
 import contactService from '../services/contacts.js'
 import { useEffect, useState , useContext} from "react"
 import { StatusBar } from "expo-status-bar"
-import Contact from "../components/Contact/index.js"
 import ContactSrollView from "../components/ContactSrollView/index.js"
-import { StyleSheet, FlatList } from "react-native"
 import  AuthContext  from '../services/AutchContext';
-import { defaultAuthData } from '../services/AutchContext/index.js';
 
 const RankingScreen = () => {
     const [contacts, setContacts] = useState([]);

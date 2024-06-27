@@ -11,7 +11,10 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import fondo from "../assets/fondo.jpg";
+import RoomsScrollView from "../components/RoomsScrollView";
 import {conecctSocket, getSocket, disconnectSocket} from '../services/socket'
+import roomService from '../services/rooms.js'
+
 
 
 export default function LobbyScreen() {
@@ -45,12 +48,27 @@ export default function LobbyScreen() {
      socket.on('disconnect', onDisconnect);
     socket.on('updateRooms', onUpdateRooms);
 
+    roomService.getRooms().then(response => {
+      console.log('Response:', response);
+      // Accede a payload y verifica si es un array
+      if (response.status === "success" && Array.isArray(response.payload)) {
+          setRooms(response.payload);
+      } else {
+          console.error('Expected an array in payload but got:', typeof response.payload);
+      }
+  })
+  .catch(err => {
+      console.log(err);
+  })
+
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
       socket.off("updateRooms", onUpdateRooms);
 
     };
+
+
   }, []);
 
   const createRoom = () => {
@@ -77,17 +95,7 @@ export default function LobbyScreen() {
         <Text style={styles.title}>Bienvenido al Juego</Text>
         <View style={styles.scrollContainer}>
           <Text style={styles.subtitle}>Salas disponibles</Text>
-          <ScrollView>
-            {rooms.map((room) => (
-              <TouchableOpacity
-                key={room.roomName}
-                style={styles.roomButton}
-                onPress={() => joinRoom(room.roomName)}
-              >
-                <Text style={styles.roomText}>{room.roomName}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+            <RoomsScrollView/>
         </View>
         <TextInput
           style={styles.input}

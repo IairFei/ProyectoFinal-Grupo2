@@ -19,7 +19,10 @@ export default function RegisterLoginScreen() {
   const [password, setPassword] = useState("");
   const [esLogin, setEsLogin] = useState(false);
 
+
   const { setAuthData } = useContext(AuthContext)
+
+ 
 
   const HandleLogin = () => {
       //TODO: Llamar al backend (o al servicio de autenticacion elegido) para obtener el token

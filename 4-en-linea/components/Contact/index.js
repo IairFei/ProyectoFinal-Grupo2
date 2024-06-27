@@ -5,7 +5,9 @@ export default ({contact}) => {
   return (
     <View>
       <Card>
-        <Card.Title>{contact.name}</Card.Title>
+        <Card.Title>Nombre: {contact.name} </Card.Title>
+        <Card.Divider />
+        <Card.Title>Puntaje:  {contact.points}</Card.Title>
         <Card.Divider />
         <View style={{ position: "relative", alignItems: "center" }}>
           <Image

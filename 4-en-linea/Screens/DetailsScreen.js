@@ -4,17 +4,23 @@ import { View, StatusBar, StyleSheet } from "react-native";
 import Contact from '../components/Contact/index.js';
 
 export default function DetailsScreen({ route }) {
-const { id } = route.params;
+const { id} = route.params;
 const [contact, setContact] = useState({});
 
 useEffect(() => {
-contactService.getContactsById(id)
-.then(contact => {
-setContact(contact);
-})
-.catch(err => {
-console.log(err);
-});
+    contactService.getContactsById(id)
+        .then(response => {
+            console.log('Response:', response);
+            // Accede a payload
+            if (response.status === "success" && response.payload) {
+                setContact(response.payload);
+            } else {
+                console.error('Expected an object in payload but got:', typeof response.payload);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
 }, [id]);
 
 
