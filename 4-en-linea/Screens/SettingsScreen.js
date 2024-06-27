@@ -1,6 +1,9 @@
-import { defaultAuthData } from '../services/AutchContext/index.js';
+import { useContext } from 'react';
+import AutchContext, { defaultAuthData } from '../services/AutchContext';
+import { StyleSheet, View, Button, Alert } from 'react-native';
 
 const SettingsScreen = () => {
+  const {authData, setAuthData} = useContext(AutchContext)
     
   const handleLogout = () => {
     Alert.alert('',"Gracias por jugar");

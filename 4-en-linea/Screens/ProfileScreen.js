@@ -1,30 +1,53 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import ItemProfile from '../components/ItemProfile/index.js';
 import Authcontext , {defaultAuthData} from '../services/AutchContext'
 import AsyncStorage from '../services/AsyncStorage';
+import contactService from '../services/contacts.js'
 
 
 
 
 const ProfileScreen = () => {
-  const {authData, setAuthData } = useContext(Authcontext)
-
-  const handleLogout = () => {
-    Alert.alert('',"Gracias por jugar");
-    setAuthData(defaultAuthData);
-  };
+  const { authData, setAuthData } = useContext(Authcontext);
+  const [contact, setContact] = useState(null);
 
   useEffect(() => {
     const loadData = async () => {
       const data = await AsyncStorage.getData('authData');
+      console.log('authData:', data);
       if (data) {
         setAuthData(data);
-        console.log(typeof data, data)
+        if (data.id) {
+          // Obtiene la información del contacto usando el id del usuario
+          contactService.getContactsById(data.id)
+            .then(response => {
+              if (response.status === 'success' && response.payload) {
+                setContact(response.payload);
+              } else {
+                console.error('Error al obtener el contacto:', response);
+              }
+            })
+            .catch(err => {
+              console.error('Error al obtener el contacto:', err);
+            });
+        }
       }
     };
     loadData();
   }, []);
+
+  if (!contact) {
+    return (
+      <View style={styles.container}>
+        <Text>Cargando...</Text>
+      </View>
+    );
+  }
+
+  // useEffect(()=>{
+  //   const contact = contactService.getContactsById()
+  // })
 
 
 
@@ -32,7 +55,7 @@ const ProfileScreen = () => {
     <View style={styles.container}>
       <View style={styles.profileContainer}>
         <Text style={styles.title}>Perfil de Usuario</Text>
-         <ItemProfile title="Nombre" description={authData.message} />
+         <ItemProfile title="Nombre" description={authData.name} />
         <ItemProfile title="Email" description={authData.email} />
         {/* <ItemProfile title="Teléfono" description={authData.access_token} /> */}
         <ItemProfile title="Puesto en el Ranking" description="1" /> 
