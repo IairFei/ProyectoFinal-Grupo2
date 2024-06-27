@@ -49,7 +49,7 @@ export default function LobbyScreen() {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
       socket.off("updateRooms", onUpdateRooms);
-      //disconnectSocket()
+
     };
   }, []);
 

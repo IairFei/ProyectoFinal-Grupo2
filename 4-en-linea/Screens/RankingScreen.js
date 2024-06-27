@@ -27,61 +27,14 @@ const RankingScreen = () => {
         });
     }, []);
 
-    const handleLogout = () => {
-        setAuthData(defaultAuthData);
-    };
 
     return (
         <View>
             <StatusBar style="auto" />
             <Text>Mejores jugadores</Text>
             <ContactSrollView contacts={contacts} />
-            <View>
-                <Button title="Cerrar sesión" onPress={handleLogout} color="#1E90FF" />
-            </View>
         </View>
     );
 };
 
 export default RankingScreen;
-
-// const RankingScreen = () =>{
-//     const [contacts, setContacts] = useState([])
-//     const {authData, setAuthData } = useContext(AuthContext)
-
-
-//     useEffect(() =>{
-//         contactService.getContacts().then(contacts =>{
-//             console.log(typeof contacts)
-//             setContacts(contacts)
-//         })
-//         .catch(err => {
-//             console.log(err)
-//         })
-//     }, [])
-
-
-
-//     const handleLogout = () => {
-     
-//         setAuthData(defaultAuthData);
-//       };
-
-//     return(
-//         <View>
-//             <StatusBar style="auto" />
-//             <Text>Mejores jugadores</Text>
-//             <ContactSrollView contacts={contacts} />
-//      <View>
-//      <Button title="Cerrar sesión" onPress={handleLogout} color="#1E90FF" />
-
-//      </View>
-//         </View>
-        
-//     )
-// }
-
-// export default RankingScreen
-
-
-

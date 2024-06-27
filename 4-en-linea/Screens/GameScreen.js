@@ -9,7 +9,7 @@ const COLS = 7;
 const ConnectFour = ({route}) => {
   const navigation = useNavigation();
   const { roomName } = route.params
-  //const route = useRoute()
+
   
   const [board, setBoard] = useState(Array.from({ length: ROWS }, () => Array(COLS).fill(null)));
   const [currentPlayer, setCurrentPlayer] = useState('red');
@@ -43,7 +43,6 @@ const ConnectFour = ({route}) => {
     setBoard(updatedBoard);
     socket.emit('updateBoard', { roomName, board: updatedBoard, currentPlayer: currentPlayer === 'red' ? 'yellow' : 'red' });
 
-    //setCurrentPlayer(currentPlayer === 'red' ? 'yellow' : 'red');
   };
 
   const findValidateRow = (col) => {

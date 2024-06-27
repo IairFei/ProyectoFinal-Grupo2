@@ -1,12 +1,9 @@
 import { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import ItemProfile from '../components/ItemProfile/index.js';
-
-// import { AuthContext } from "../services/AuthContext";
-// import { defaultAuthData } from '../services/AutchContext/index.js';
 import Authcontext , {defaultAuthData} from '../services/AutchContext'
 import AsyncStorage from '../services/AsyncStorage';
-//import AutchContext from '../services/AutchContext/index.js';
+
 
 
 

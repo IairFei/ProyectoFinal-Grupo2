@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { AuthContext, AuthProvider } from "./services/AuthContext";
 import RegisterLoginScreen from "./Screens/RegisterLoginScreen";
 import HomeNavigation from "./navigations/HomeNavigation";
-//import { defaultAuthData} from "./services/AutchContext";
 import AsyncStorage from "./services/AsyncStorage";
 import AuthContextGlobal, {defaultAuthData} from './services/AutchContext'
 
