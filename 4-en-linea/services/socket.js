@@ -3,7 +3,7 @@ import io  from 'socket.io-client';
 let socket
 
 export const conecctSocket = () =>{
-    socket = io('https://04a2-190-19-190-107.ngrok-free.app');
+    socket = io('https://71cf-190-19-190-107.ngrok-free.app');
     return socket
 }
 export const getSocket = () =>{

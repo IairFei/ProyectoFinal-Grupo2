@@ -1,17 +1,24 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, Button, Alert } from 'react-native';
 import ItemProfile from '../components/ItemProfile/index.js';
-import { AuthContext } from "../services/AuthContext";
-import { defaultAuthData } from '../services/AutchContext/index.js';
+// import { AuthContext } from "../services/AuthContext";
+// import { defaultAuthData } from '../services/AutchContext/index.js';
+import Authcontext , {defaultAuthData} from '../services/AutchContext'
+import AsyncStorage from '../services/AsyncStorage';
+//import AutchContext from '../services/AutchContext/index.js';
 
-const ProfileScreen = ({ contac }) => {
-  const {authData, setAuthData } = useContext(AuthContext)
-  const contactemp = {
-    nombre: 'Luca',
-    apellido: 'Polti',
-    email: 'lucapolti@ort.edu.ar',
-    telefono: '11-1111-1111'
-  };
+
+
+const ProfileScreen = () => {
+  const {authData, setAuthData } = useContext(Authcontext)
+
+
+  // const contactemp = {
+  //   nombre: 'Luca',
+  //   apellido: 'Polti',
+  //   email: 'lucapolti@ort.edu.ar',
+  //   telefono: '11-1111-1111'
+  // };
   
 
 
@@ -20,14 +27,27 @@ const ProfileScreen = ({ contac }) => {
     setAuthData(defaultAuthData);
   };
 
+  useEffect(() => {
+    const loadData = async () => {
+      const data = await AsyncStorage.getData('authData');
+      if (data) {
+        setAuthData(data);
+        console.log(typeof data, data)
+      }
+    };
+    loadData();
+  }, []);
+
+
+
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>
         <Text style={styles.title}>Perfil de Usuario</Text>
-        <ItemProfile title="Nombre" description={authData.profile.name} />
-        <ItemProfile title="Email" description={authData.profile.email} />
-        <ItemProfile title="Teléfono" description={authData.access_token} />
-        <ItemProfile title="Puesto en el Ranking" description="1" />
+         <ItemProfile title="Nombre" description={authData.message} />
+        <ItemProfile title="Email" description={authData.email} />
+        {/* <ItemProfile title="Teléfono" description={authData.access_token} /> */}
+        <ItemProfile title="Puesto en el Ranking" description="1" /> 
       </View>
       <Button title="Cerrar sesión" onPress={handleLogout} color="#1E90FF" />
     </View>

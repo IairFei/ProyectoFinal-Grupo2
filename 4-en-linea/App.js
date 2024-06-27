@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { AuthContext, AuthProvider } from "./services/AuthContext";
 import RegisterLoginScreen from "./Screens/RegisterLoginScreen";
 import HomeNavigation from "./navigations/HomeNavigation";
-import { defaultAuthData} from "./services/AutchContext";
+//import { defaultAuthData} from "./services/AutchContext";
 import AsyncStorage from "./services/AsyncStorage";
+import AuthContextGlobal, {defaultAuthData} from './services/AutchContext'
 
 
 export default function App() {
@@ -11,7 +12,7 @@ export default function App() {
 
   useEffect(() => {
     AsyncStorage.getData("authData").then((data) => {
-      console.log("Encontro algo???", data);
+      console.log("Encontro algo???");
       if (data) {
         setAuthData(data);
       }
@@ -31,8 +32,8 @@ export default function App() {
   }, [authData]);
 
   return (
-    <AuthContext.Provider value={{authData,setAuthData}}>
+    <AuthContextGlobal.Provider value={{authData,setAuthData}}>
       {authData ? <HomeNavigation /> : <RegisterLoginScreen />}
-    </AuthContext.Provider>
+    </AuthContextGlobal.Provider>
   );
 }

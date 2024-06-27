@@ -11,7 +11,7 @@ import {
 import fondo from "../assets/fondo.jpg";
 import { useState, useContext } from "react";
 import authService from '../services/login' 
-import { AuthContext } from "../services/AuthContext";
+import AuthContext from '../services/AutchContext'
 
 export default function RegisterLoginScreen() {
   const [nombre, setNombre] = useState("");
