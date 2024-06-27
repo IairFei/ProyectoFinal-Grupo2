@@ -5,9 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
-  TextInput,
   ScrollView,
-  Alert
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import fondo from "../assets/fondo.jpg";
@@ -15,7 +13,6 @@ import roomService from '../services/rooms'
 
 export default function LobbyScreen() {
   const [rooms, setRooms] = useState([]);
-  const [newRoomName, setNewRoomName] = useState("");
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -31,23 +28,13 @@ export default function LobbyScreen() {
   .catch(err => {
       console.log(err);
   })
-    // Aquí puedes llamar a tu servicio para obtener las salas si las tienes almacenadas en tu backend.
-    // Ejemplo:
-    // roomService.getRooms().then(response => setRooms(response.payload)).catch(err => console.error(err));
+
   }, []);
 
-  const createRoom = () => {
-    if (newRoomName.trim() !== "") {
-      // Aquí puedes llamar a tu backend para crear una nueva sala.
-      // Ejemplo:
-      // roomService.createRoom(newRoomName).then(response => {
-      //   setRooms([...rooms, response.payload]);
-      // }).catch(err => console.error(err));
-      setNewRoomName("");
-    } else {
-      Alert.alert("Error", "El nombre de la sala no puede estar vacío");
-    }
-  };
+    const createRoom = ()=>{
+    const newRoom = roomService.createRoom()
+    setRooms([...rooms, newRoom])
+  }
 
   const joinRoom = (roomName) => {
     navigation.replace("GameScreen", { roomName });
@@ -72,13 +59,7 @@ export default function LobbyScreen() {
             ))}
           </ScrollView>
         </View>
-        <TextInput
-          style={styles.input}
-          placeholder="Nombre de la sala"
-          placeholderTextColor="#aaa"
-          value={newRoomName}
-          onChangeText={setNewRoomName}
-        />
+
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={createRoom}>
             <Text style={styles.buttonText}>Crear sala</Text>

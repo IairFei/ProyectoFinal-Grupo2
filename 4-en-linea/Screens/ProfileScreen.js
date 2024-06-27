@@ -45,11 +45,6 @@ const ProfileScreen = () => {
     );
   }
 
-  // useEffect(()=>{
-  //   const contact = contactService.getContactsById()
-  // })
-
-
 
   return (
     <View style={styles.container}>

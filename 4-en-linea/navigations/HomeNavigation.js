@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import HomeScreen from "../Screens/HomeScreen";
 import GameScreen from '../Screens/GameScreen'
-// import RegisterLoginScreen from "../Screens/RegisterLoginScreen";
 import RankingScreen from "../Screens/RankingScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
 import DetailsScreen from "../Screens/DetailsScreen";
