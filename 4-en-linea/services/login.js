@@ -1,11 +1,11 @@
 import AsyncStorage from "./AsyncStorage";
 
-const BASE_URL = 'https://71cf-190-19-190-107.ngrok-free.app/api/auth/';
+import BASE_URL from '../services/conecction.js'
 
 const login = (email, password) => {
   return new Promise((resolve, reject) => {
 
-    fetch(`${BASE_URL}login/`, {
+    fetch(`${BASE_URL}/api/auth/login/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ const register = (email, password, name) => {
   console.log(email, password, name)
   
   return new Promise((resolve, reject) => {
-    fetch(`${BASE_URL}register/`, {
+    fetch(`${BASE_URL}/api/auth/register/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

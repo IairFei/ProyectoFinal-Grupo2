@@ -11,6 +11,7 @@ import GameOverScreen from "../Screens/GameOverScreen";
 import LobbyScreen from '../Screens/LobbyScreen'
 import { NavigationContainer } from "@react-navigation/native";
 import SettingsScreen from "../Screens/SettingsScreen";
+import GameScreenn from '../Screens/GameScreenn'
 
 
 const RankingNestedNavigation =  () =>{

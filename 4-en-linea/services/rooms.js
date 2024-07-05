@@ -1,8 +1,8 @@
-const BASE_URL = 'https://71cf-190-19-190-107.ngrok-free.app/'
+import BASE_URL from '../services/conecction.js'
 
 const getRooms = () => {
   return new Promise((resolve, reject) => {
-      fetch(`${BASE_URL}api/rooms`, {
+      fetch(`${BASE_URL}/api/rooms`, {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ const getRooms = () => {
 
 const getRoomsById = (id) => {
     return new Promise((resolve, reject) => {
-        fetch(`${BASE_URL}api/rooms/${id}`, {
+        fetch(`${BASE_URL}/api/rooms/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -52,14 +52,13 @@ const getRoomsById = (id) => {
 
 const createRoom = () => {
   return new Promise((resolve, reject) => {
-    fetch(`${BASE_URL}api/rooms/`, {
+    fetch(`${BASE_URL}/api/rooms/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then((res) => {
-        console.log(typeof res, res)
         if (res.status === 201) {
           return res.json();
         } else {

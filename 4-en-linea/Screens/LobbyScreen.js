@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Text,
   View,
@@ -9,35 +9,61 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import fondo from "../assets/fondo.jpg";
-import roomService from '../services/rooms'
+import roomService from "../services/rooms";
+//import { conecctSocket, getSocket, disconnectSocket } from "../services/socket";
+import socket from "../services/socket";
 
 export default function LobbyScreen() {
   const [rooms, setRooms] = useState([]);
+  const [isConnected, setIsConnected] = useState(false);
+  const [socketId, setSocketId] = useState();
+
   const navigation = useNavigation();
+  //const socket = conecctSocket()
 
   useEffect(() => {
-        roomService.getRooms().then(response => {
-      console.log('Response:', response);
-      // Accede a payload y verifica si es un array
-      if (response.status === "success" && Array.isArray(response.payload)) {
+    roomService
+      .getRooms()
+      .then((response) => {
+        // Accede a payload y verifica si es un array
+        if (response.status === "success" && Array.isArray(response.payload)) {
           setRooms(response.payload);
-      } else {
-          console.error('Expected an array in payload but got:', typeof response.payload);
-      }
-  })
-  .catch(err => {
-      console.log(err);
-  })
+        } else {
+          console.error(
+            "Expected an array in payload but got:",
+            typeof response.payload
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
+    socket.on("connect", () => setIsConnected(true));
+
+    socket.on("actualizarSalas", (data) => {
+      setRooms((prevRooms) => [...prevRooms, data]);
+
+    });
+
+    return () => {
+      socket.off("actualizarSalas");
+    };
   }, []);
 
-    const createRoom = ()=>{
-    const newRoom = roomService.createRoom()
-    setRooms([...rooms, newRoom])
-  }
 
-  const joinRoom = (roomName) => {
-    navigation.replace("GameScreen", { roomName });
+  const createRoom = useCallback(async () => {
+    try {
+      const newRoom = await roomService.createRoom();
+      socket.emit("actualizarSalas", newRoom);
+    } catch (error) {
+      console.error("Error creating room:", error);
+    }
+  }, [socket]);
+
+  const joinRoom = (roomId) => {
+    socket.emit("joinRoom", roomId);
+    navigation.replace("GameScreen", { roomId });
   };
 
   return (
