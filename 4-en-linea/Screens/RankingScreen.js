@@ -11,7 +11,6 @@ const RankingScreen = () => {
 
     useEffect(() => {
         contactService.getContacts().then(response => {
-            console.log('Response:', response);
             // Accede a payload y verifica si es un array
             if (response.status === "success" && Array.isArray(response.payload)) {
                 setContacts(response.payload);

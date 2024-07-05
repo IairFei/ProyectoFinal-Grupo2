@@ -1,23 +1,28 @@
-import io  from 'socket.io-client';
+import io, { Socket }  from 'socket.io-client';
+import BASE_URL from '../services/conecction.js'
 
-let socket
+const socket = io(BASE_URL)
 
-export const conecctSocket = () =>{
-    socket = io('https://71cf-190-19-190-107.ngrok-free.app');
-    return socket
-}
-export const getSocket = () =>{
-    if(!socket){
-        throw new Error('Socket no conectado')
-    }
-    return socket
-}
+export default socket
 
-export const disconnectSocket = () =>{
-    if(socket){
-        socket.disconnect()
-    }
-}
+// let socket
+
+// export const conecctSocket = () =>{
+//     socket = io(BASE_URL);
+//     return socket
+//}
+// export const getSocket = () =>{
+//     if(!socket){
+//         throw new Error('Socket no conectado')
+//     }
+//     return socket
+// }
+
+// export const disconnectSocket = () =>{
+//     if(socket){
+//         socket.disconnect()
+//     }
+// }
 
 
 

@@ -1,8 +1,8 @@
-const BASE_URL = 'https://71cf-190-19-190-107.ngrok-free.app/'
+import BASE_URL from '../services/conecction.js'
 
 const getContacts = () => {
   return new Promise((resolve, reject) => {
-      fetch(`${BASE_URL}api/users`, {
+      fetch(`${BASE_URL}/api/users`, {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ const getContacts = () => {
 
 const getContactsById = (id) => {
     return new Promise((resolve, reject) => {
-        fetch(`${BASE_URL}api/users/${id}`, {
+        fetch(`${BASE_URL}/api/users/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,17 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Button, Text } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Button, Text, Vibration } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+//import { getSocket } from '../services/socket.js';
+import socket from '../services/socket';
+
 
 const ROWS = 6;
 const COLS = 7;
 
-const ConnectFour = () => {
+const ConnectFour = ({route}) => {
   const navigation = useNavigation();
   
   const [board, setBoard] = useState(Array.from({ length: ROWS }, () => Array(COLS).fill(null)));
   const [currentPlayer, setCurrentPlayer] = useState('red');
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState(null);
+  const [roomId, setRoomId] = useState(null)
+
+  useEffect(()=>{
+    const { roomId } = route.params
+    setRoomId(roomId)
+    //console.log(`roomId: ${roomId}, desde room`)
+
+    socket.on('movimiento',(data)=>{
+      
+    setBoard(data);
+    setCurrentPlayer(currentPlayer === 'red' ? 'yellow' : 'red');
+
+      //console.log(typeof data, data)
+    })
+
+    return()=>{
+      socket.off('')
+    }
+
+  },[route.params])
 
   const handlePress = (row, col) => {
     let validateRow = findValidateRow(col);
@@ -20,8 +43,10 @@ const ConnectFour = () => {
     }
     const updatedBoard = [...board];
     updatedBoard[validateRow][col] = currentPlayer;
-    setBoard(updatedBoard);
-    setCurrentPlayer(currentPlayer === 'red' ? 'yellow' : 'red');
+    Vibration.vibrate(50)
+    //setBoard(updatedBoard);
+    //setCurrentPlayer(currentPlayer === 'red' ? 'yellow' : 'red');
+    socket.emit('movimiento', {roomId, updatedBoard})
   };
 
   const findValidateRow = (col) => {
@@ -39,6 +64,8 @@ const ConnectFour = () => {
     setWinner(null);
     setGameOver(false);
   };
+
+
 
   useEffect(() => {
     const checkForWinner = (board, player) => {
