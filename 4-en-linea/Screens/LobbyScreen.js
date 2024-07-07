@@ -12,11 +12,13 @@ import fondo from "../assets/fondo.jpg";
 import roomService from "../services/rooms";
 //import { conecctSocket, getSocket, disconnectSocket } from "../services/socket";
 import socket from "../services/socket";
+import AsyncStorage from "../services/AsyncStorage";
 
 export default function LobbyScreen() {
   const [rooms, setRooms] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
   const [socketId, setSocketId] = useState();
+  const [user, sertUser] = useState(null)
 
   const navigation = useNavigation();
   //const socket = conecctSocket()
@@ -38,6 +40,9 @@ export default function LobbyScreen() {
       .catch((err) => {
         console.log(err);
       });
+
+    data = AsyncStorage.getData('authData')
+    console.log("data de lobby", data.payload)
 
     socket.on("connect", () => setIsConnected(true));
 

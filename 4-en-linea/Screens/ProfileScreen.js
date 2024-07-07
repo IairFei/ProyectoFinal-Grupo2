@@ -15,25 +15,24 @@ const ProfileScreen = () => {
   useEffect(() => {
     const loadData = async () => {
       const data = await AsyncStorage.getData('authData');
-      console.log('authData:', data);
       if (data) {
-        setAuthData(data);
-        if (data.id) {
-          // Obtiene la información del contacto usando el id del usuario
-          contactService.getContactsById(data.id)
+       setAuthData(data);
+        if (data.payload.id) {
+         // Obtiene la información del contacto usando el id del usuario
+          contactService.getContactsById(data.payload.id)
             .then(response => {
               if (response.status === 'success' && response.payload) {
                 setContact(response.payload);
               } else {
-                console.error('Error al obtener el contacto:', response);
+                console.error('Error al obtener el contacto111111:', response);
               }
             })
             .catch(err => {
-              console.error('Error al obtener el contacto:', err);
+              console.error('Error al obtener el contacto22222222:', err);
             });
         }
       }
-    };
+    }
     loadData();
   }, []);
 
@@ -50,10 +49,10 @@ const ProfileScreen = () => {
     <View style={styles.container}>
       <View style={styles.profileContainer}>
         <Text style={styles.title}>Perfil de Usuario</Text>
-         <ItemProfile title="Nombre" description={authData.name} />
-        <ItemProfile title="Email" description={authData.email} />
+         <ItemProfile title="Nombre" description={contact.name} />
+        <ItemProfile title="Email" description={contact.email} />
         {/* <ItemProfile title="Teléfono" description={authData.access_token} /> */}
-        <ItemProfile title="Puesto en el Ranking" description="1" /> 
+        <ItemProfile title="Partigas ganadas" description={contact.points} /> 
       </View>
     </View>
   );

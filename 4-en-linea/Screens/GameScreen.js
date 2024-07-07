@@ -16,22 +16,24 @@ const ConnectFour = ({route}) => {
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState(null);
   const [roomId, setRoomId] = useState(null)
+  const [jugador1, setJugador1] = useState(null)
+  const [jugador2, setJugador2] = useState(null)
 
   useEffect(()=>{
     const { roomId } = route.params
     setRoomId(roomId)
-    //console.log(`roomId: ${roomId}, desde room`)
 
-    socket.on('movimiento',(data)=>{
-      
-    setBoard(data);
-    setCurrentPlayer(currentPlayer === 'red' ? 'yellow' : 'red');
+    
 
-      //console.log(typeof data, data)
+    socket.on('movimiento', (data)=>{
+      const {updatedBoard, nextPlayer} = data
+     // updatedBoard[validateRow][col] = currentPlayer;
+      setBoard(updatedBoard);
+      setCurrentPlayer(nextPlayer);
     })
 
     return()=>{
-      socket.off('')
+      socket.off('movimiento')
     }
 
   },[route.params])
@@ -41,12 +43,13 @@ const ConnectFour = ({route}) => {
     if (validateRow == null) {
       return;
     }
+
     const updatedBoard = [...board];
-    updatedBoard[validateRow][col] = currentPlayer;
+     updatedBoard[validateRow][col] = currentPlayer;
     Vibration.vibrate(50)
     //setBoard(updatedBoard);
-    //setCurrentPlayer(currentPlayer === 'red' ? 'yellow' : 'red');
-    socket.emit('movimiento', {roomId, updatedBoard})
+    const nextPlayer = currentPlayer === 'red' ? 'yellow' : 'red';
+    socket.emit('movimiento', {roomId, updatedBoard, nextPlayer})
   };
 
   const findValidateRow = (col) => {
