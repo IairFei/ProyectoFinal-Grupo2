@@ -22,7 +22,6 @@ export default function App() {
     setTimeout(() => {
       if (authData) {
         console.log("Usuario logueado");
-        AsyncStorage.storeData("authData", authData);
       } else {
         console.log("Usuario deslogueado");
         AsyncStorage.clearAll();
