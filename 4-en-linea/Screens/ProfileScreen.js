@@ -19,16 +19,16 @@ const ProfileScreen = () => {
        setAuthData(data);
         if (data.payload.id) {
          // Obtiene la información del contacto usando el id del usuario
-          contactService.getContactsById(data.payload.id)
+         contactService.getContactsById(data.payload.id)
             .then(response => {
               if (response.status === 'success' && response.payload) {
                 setContact(response.payload);
               } else {
-                console.error('Error al obtener el contacto111111:', response);
+                console.error('Error al obtener el contacto:', response);
               }
             })
             .catch(err => {
-              console.error('Error al obtener el contacto22222222:', err);
+              console.error('Error al obtener el contacto:', err);
             });
         }
       }
@@ -52,7 +52,7 @@ const ProfileScreen = () => {
          <ItemProfile title="Nombre" description={contact.name} />
         <ItemProfile title="Email" description={contact.email} />
         {/* <ItemProfile title="Teléfono" description={authData.access_token} /> */}
-        <ItemProfile title="Partigas ganadas" description={contact.points} /> 
+        <ItemProfile title="Puntaje" description={contact.points} /> 
       </View>
     </View>
   );

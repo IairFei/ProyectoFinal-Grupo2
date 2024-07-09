@@ -12,6 +12,7 @@ import LobbyScreen from '../Screens/LobbyScreen'
 import { NavigationContainer } from "@react-navigation/native";
 import SettingsScreen from "../Screens/SettingsScreen";
 import GameScreenn from '../Screens/GameScreenn'
+import LoadingScreen from "../Screens/LoadingScreen";
 
 
 const RankingNestedNavigation =  () =>{
@@ -56,6 +57,11 @@ const HomeNestedNavigation = () =>{
             <Stack.Screen 
                       name='LobbyScreen'
                      component={LobbyScreen}
+                     options={{ headerShown: false }}
+         />
+                     <Stack.Screen 
+                      name='LoadingScreen'
+                     component={LoadingScreen}
                      options={{ headerShown: false }}
          />
          </Stack.Navigator>

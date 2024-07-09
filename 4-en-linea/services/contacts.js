@@ -26,6 +26,7 @@ const getContacts = () => {
 };
 
 const getContactsById = (id) => {
+    console.log("ID: ",typeof id, id)
     return new Promise((resolve, reject) => {
         fetch(`${BASE_URL}/api/users/${id}`, {
             method: 'GET',
