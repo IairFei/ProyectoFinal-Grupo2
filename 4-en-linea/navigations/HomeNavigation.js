@@ -12,7 +12,7 @@ import LobbyScreen from '../Screens/LobbyScreen'
 import { NavigationContainer } from "@react-navigation/native";
 import SettingsScreen from "../Screens/SettingsScreen";
 import GameScreenn from '../Screens/GameScreenn'
-import LoadingScreen from "../Screens/LoadingScreen";
+import WaitingScreen from "../Screens/WaitingScreen";
 
 
 const RankingNestedNavigation =  () =>{
@@ -60,8 +60,8 @@ const HomeNestedNavigation = () =>{
                      options={{ headerShown: false }}
          />
                      <Stack.Screen 
-                      name='LoadingScreen'
-                     component={LoadingScreen}
+                      name='WaitingScreen'
+                     component={WaitingScreen}
                      options={{ headerShown: false }}
          />
          </Stack.Navigator>

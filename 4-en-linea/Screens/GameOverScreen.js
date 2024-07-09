@@ -14,9 +14,7 @@ export default function GameOverScreen() {
     navigation.replace('Home');
   };
 
-  const reiniciarJuego = () => {
-    navigation.replace( 'GameScreen' );
-  };
+
 
   return (
     <ImageBackground source={fondo} style={styles.background}>
