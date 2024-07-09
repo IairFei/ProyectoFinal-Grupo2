@@ -83,6 +83,10 @@ const ConnectFour = () => {
     checkGameOver();
   }, [board, navigation]);
 
+  const getCurrentPlayerName = () => {
+    return currentPlayer === 'red' ? `Turno jugador 1 (${jugador1.payload.name})` : `Turno jugador 2 (${jugador2.payload.name})`;
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
