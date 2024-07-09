@@ -74,11 +74,33 @@ const createRoom = () => {
   });
 };
 
+const deleteRoom = (id)=>{
+  return new Promise((resolve, reject) => {
+    fetch(`${BASE_URL}/api/rooms/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => {
+        if (res.status === 201) {
+          return res.json();
+        } else {
+          throw new Error('No se pudo eliminar la sala');
+        }
+      })
+      .catch((error) => {
+        reject(error.message); 
+      });
+  });
+}
+
 
 export default {
     getRooms,
     getRoomsById,
-    createRoom
+    createRoom,
+    deleteRoom
 }
 
 

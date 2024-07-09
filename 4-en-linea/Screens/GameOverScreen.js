@@ -1,14 +1,16 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Text, View, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
 import fondo from "../assets/fondo.jpg";
+import roomService from '../services/rooms.js'
 
 
 export default function GameOverScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { winner } = route.params;
+  const { winner, roomId } = route.params;
 
   const irAInicio = () => {
+    roomService.deleteRoom(roomId)
     navigation.replace('Home');
   };
 
@@ -25,9 +27,9 @@ export default function GameOverScreen() {
           <TouchableOpacity style={styles.button} onPress={irAInicio}>
             <Text style={styles.buttonText}>Volver al inicio</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={reiniciarJuego}>
+          {/* <TouchableOpacity style={styles.button} onPress={reiniciarJuego}>
             <Text style={styles.buttonText}>Reiniciar juego</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </ImageBackground>

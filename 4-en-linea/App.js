@@ -14,6 +14,7 @@ export default function App() {
       console.log("Encontro algo???");
       if (data) {
         setAuthData(data);
+        console.log("Data desde app.js: ", data)
       }
     });
   }, []);

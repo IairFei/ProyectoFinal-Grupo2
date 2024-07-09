@@ -18,25 +18,62 @@ const ConnectFour = ({route}) => {
   const [roomId, setRoomId] = useState(null)
   const [jugador1, setJugador1] = useState(null)
   const [jugador2, setJugador2] = useState(null)
+  
+  // useEffect(()=>{
+  //   const { roomId } = route.params
 
-  useEffect(()=>{
-    const { roomId } = route.params
-    setRoomId(roomId)
 
-    
+  // setRoomId(roomId)
 
-    socket.on('movimiento', (data)=>{
-      const {updatedBoard, nextPlayer} = data
-     // updatedBoard[validateRow][col] = currentPlayer;
+
+  //   //socket.emit('setRoomId',roomParamsId)
+
+  //   socket.on('playerJoined',(jugador)=>{
+  //     if(!jugador1){
+  //       setJugador1(jugador)
+  //     }else{
+  //       setJugador2(jugador)
+  //     }
+  //   })
+
+  //   socket.on('movimiento', (data)=>{
+  //     const {updatedBoard, nextPlayer} = data
+  //    // updatedBoard[validateRow][col] = currentPlayer;
+  //     setBoard(updatedBoard);
+  //     setCurrentPlayer(nextPlayer);
+  //   })
+
+
+
+  //   return()=>{
+  //     socket.off('movimiento')
+  //   }
+
+  // },[route.params])
+
+  useEffect(() => {
+    const { roomId } = route.params;
+    setRoomId(roomId);
+  
+    socket.on('playerJoined', ({ jugador1, jugador2 }) => {
+      if (jugador1) {
+        setJugador1(jugador1);
+      }
+      if (jugador2) {
+        setJugador2(jugador2);
+      }
+    });
+  
+    socket.on('movimiento', (data) => {
+      const { updatedBoard, nextPlayer } = data;
       setBoard(updatedBoard);
       setCurrentPlayer(nextPlayer);
-    })
-
-    return()=>{
-      socket.off('movimiento')
-    }
-
-  },[route.params])
+    });
+  
+    return () => {
+      socket.off('movimiento');
+    };
+  }, [route.params]);
 
   const handlePress = (row, col) => {
     let validateRow = findValidateRow(col);
@@ -50,6 +87,8 @@ const ConnectFour = ({route}) => {
     //setBoard(updatedBoard);
     const nextPlayer = currentPlayer === 'red' ? 'yellow' : 'red';
     socket.emit('movimiento', {roomId, updatedBoard, nextPlayer})
+    console.log('jugador1: ', jugador1)
+    console.log('jugador2: ', jugador2)
   };
 
   const findValidateRow = (col) => {
@@ -61,12 +100,12 @@ const ConnectFour = ({route}) => {
     return null;
   };
 
-  const handleReset = () => {
-    setBoard(Array.from({ length: ROWS }, () => Array(COLS).fill(null)));
-    setCurrentPlayer('red');
-    setWinner(null);
-    setGameOver(false);
-  };
+  // const handleReset = () => {
+  //   setBoard(Array.from({ length: ROWS }, () => Array(COLS).fill(null)));
+  //   setCurrentPlayer('red');
+  //   setWinner(null);
+  //   setGameOver(false);
+  // };
 
 
 
@@ -142,15 +181,15 @@ const ConnectFour = ({route}) => {
       if (checkForWinner(board, 'red')) {
         setWinner('Ganador Jugador 1');
         setGameOver(true);
-        navigation.replace('GameOverScreen', { winner: 'Ganador Jugador 1' });
+        navigation.replace('GameOverScreen', { winner: 'Ganador Jugador 1', roomId });
       } else if (checkForWinner(board, 'yellow')) {
         setWinner('Ganador Jugador 2');
         setGameOver(true);
-        navigation.replace('GameOverScreen', { winner: 'Ganador Jugador 2' });
+        navigation.replace('GameOverScreen', { winner: 'Ganador Jugador 2', roomId });
       } else if (boardFull(board)) {
         setWinner('Empate');
         setGameOver(true);
-        navigation.replace('GameOverScreen', { winner: 'Empate' });
+        navigation.replace('GameOverScreen', { winner: 'Empate', roomId });
       }
     };
 
@@ -178,7 +217,6 @@ const ConnectFour = ({route}) => {
           </View>
         ))}
       </View>
-      <Button title="Reiniciar" onPress={handleReset} color="#841584" />
     </View>
   );
 };
