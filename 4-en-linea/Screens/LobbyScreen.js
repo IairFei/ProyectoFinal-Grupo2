@@ -292,7 +292,7 @@ export default function LobbyScreen() {
 
   const joinRoom = (roomId) => {
     socket.emit("joinRoom", { roomId, authData });
-    navigation.replace("GameScreen", { roomId });
+    navigation.replace("GameScreen", { roomId, authData });
   };
 
   return (
