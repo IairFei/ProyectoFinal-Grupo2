@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { AuthContext, AuthProvider } from "./services/AuthContext";
+//import { AuthContext, AuthProvider } from "./services/AuthContext";
 import RegisterLoginScreen from "./Screens/RegisterLoginScreen";
 import HomeNavigation from "./navigations/HomeNavigation";
 import AsyncStorage from "./services/AsyncStorage";
@@ -25,6 +25,7 @@ export default function App() {
         console.log("Usuario logueado");
       } else {
         console.log("Usuario deslogueado");
+        console.log("Borrando data")
         AsyncStorage.clearAll();
       }
     });
@@ -36,3 +37,4 @@ export default function App() {
     </AuthContextGlobal.Provider>
   );
 }
+

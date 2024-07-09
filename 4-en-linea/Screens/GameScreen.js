@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 //import { getSocket } from '../services/socket.js';
 import socket from '../services/socket';
 import contactService from '../services/contacts.js'
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry.js';
 
 
 const ROWS = 6;
@@ -21,8 +22,7 @@ const ConnectFour = ({route}) => {
   const [jugador1, setJugador1] = useState(null)
   const [jugador2, setJugador2] = useState(null)
   const [authData, setAuthData] = useState(null)
-
-
+  
 
 
   useEffect(() => {
@@ -55,7 +55,8 @@ const ConnectFour = ({route}) => {
 
   const handlePress = (row, col) => {
     
-    if ((currentPlayer === 'red' && authData.payload.id !== jugador1.payload.id) || (currentPlayer === 'yellow' && authData.payload.id !== jugador2.payload.id)) {
+    if ((getCurrentPlayerName() === "Esperando jugador" ) || (currentPlayer === 'red' && authData.payload.id !== jugador1.payload.id) || (currentPlayer === 'yellow' && authData.payload.id !== jugador2.payload.id)) {
+      //alert("Turno de: ", getCurrentPlayerName())
       return; // Si no es el turno del jugador, no hace nada
     }
 
@@ -175,6 +176,16 @@ const ConnectFour = ({route}) => {
     checkGameOver();
   }, [board, navigation]);
 
+  
+  
+
+  const getCurrentPlayerName = () => {
+    if(!jugador1 || !jugador2){
+      return "Esperando jugador"
+    }
+    return currentPlayer === 'red' ? `Turno de: ${jugador1.payload.name}` : `Turno de: ${jugador2.payload.name}`;
+  };
+
   return (
     <View style={styles.container}>
   
@@ -195,7 +206,8 @@ const ConnectFour = ({route}) => {
         ))}
       </View>
       <Text style={styles.text}>
-        {currentPlayer === 'red' ? `Turno jugador 1 (${jugador1})` : `Turno jugador 2 (${authData})`}
+        {/* {currentPlayer === 'red' ? `Turno jugador 1 ()` : `Turno jugador 2 ()`} */}
+        {getCurrentPlayerName()}
       </Text>
     </View>
   );
