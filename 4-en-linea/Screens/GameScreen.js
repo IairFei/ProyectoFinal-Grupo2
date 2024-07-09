@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet, Button, Text, Vibration } from 'rea
 import { useNavigation } from '@react-navigation/native';
 //import { getSocket } from '../services/socket.js';
 import socket from '../services/socket';
+import contactService from '../services/contacts.js'
 
 
 const ROWS = 6;
@@ -69,6 +70,8 @@ const ConnectFour = ({route}) => {
       setBoard(updatedBoard);
       setCurrentPlayer(nextPlayer);
     });
+
+ 
   
     return () => {
       socket.off('movimiento');
@@ -76,6 +79,8 @@ const ConnectFour = ({route}) => {
   }, [route.params]);
 
   const handlePress = (row, col) => {
+
+
     let validateRow = findValidateRow(col);
     if (validateRow == null) {
       return;
@@ -89,6 +94,7 @@ const ConnectFour = ({route}) => {
     socket.emit('movimiento', {roomId, updatedBoard, nextPlayer})
     console.log('jugador1: ', jugador1)
     console.log('jugador2: ', jugador2)
+
   };
 
   const findValidateRow = (col) => {
@@ -181,10 +187,14 @@ const ConnectFour = ({route}) => {
       if (checkForWinner(board, 'red')) {
         setWinner('Ganador Jugador 1');
         setGameOver(true);
+        contactService.addPoint(jugador1.payload.id)
+        console.log("ID desde game", jugador1.payload.id)
         navigation.replace('GameOverScreen', { winner: 'Ganador Jugador 1', roomId });
       } else if (checkForWinner(board, 'yellow')) {
         setWinner('Ganador Jugador 2');
         setGameOver(true);
+        contactService.addPoint(jugador2.payload.id)
+        console.log("ID desde game", jugador1.payload.id)
         navigation.replace('GameOverScreen', { winner: 'Ganador Jugador 2', roomId });
       } else if (boardFull(board)) {
         setWinner('Empate');
@@ -199,7 +209,7 @@ const ConnectFour = ({route}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
-        {currentPlayer === 'red' ? "Turno Jugador 1 (Rojo)" : "Turno Jugador 2 (Amarillo)"}
+        {currentPlayer === 'red' ? `Turno jugador 1 (${jugador1})` : `Turno jugador 2 (${jugador2})`}
       </Text>
       <View style={styles.board}>
         {board.map((row, rowIndex) => (
