@@ -21,6 +21,8 @@ const login = (email, password) => {
     })
     .then(authData => {
       AsyncStorage.storeData('authData', authData);
+      console.log("Auth data desde service login storedata: ", typeof authData, authData)
+
       resolve(authData);
     })
     .catch(error => {

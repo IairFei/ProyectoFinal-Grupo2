@@ -7,6 +7,7 @@ const storeData = async (key, value) => {
     if (isObject(value)){
       const jsonvalue = JSON.stringify(value)
       await AsyncStorage.setItem(key, jsonvalue)
+      console.log("Auth data desde AsyncStorage storeData: ", typeof jsonvalue, jsonvalue)
     }else{
       await AsyncStorage.setItem(key, value)
     }
@@ -18,7 +19,7 @@ const storeData = async (key, value) => {
 const getData = async (key) => {
   try{
     const value = await AsyncStorage.getItem(key)
-    console.log("Value: ", value)
+    console.log("Value: ",typeof value, value)
     return value ? JSON.parse(value) : null
   }catch(e){
     console.log(e)
@@ -28,6 +29,7 @@ const getData = async (key) => {
 const clearAll = async() => {
   try{
     await AsyncStorage.clear()
+    console.log("Limpiando desde asyncStorage")
   }catch(e){
     console.log(e)
   }

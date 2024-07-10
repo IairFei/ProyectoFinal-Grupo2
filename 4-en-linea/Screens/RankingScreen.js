@@ -61,7 +61,7 @@ import AuthContext from '../services/AutchContext';
 
 const RankingScreen = () => {
     const [contacts, setContacts] = useState([]);
-    const { authData } = useContext(AuthContext);
+    //const { authData } = useContext(AuthContext);
 
     useFocusEffect(
         useCallback(() => {

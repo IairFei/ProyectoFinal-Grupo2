@@ -22,6 +22,7 @@ const ConnectFour = ({route}) => {
   const [jugador1, setJugador1] = useState(null)
   const [jugador2, setJugador2] = useState(null)
   const [authData, setAuthData] = useState(null)
+  console.log("AuthData desde GameScreen: ", authData)
   
 
 
@@ -29,6 +30,7 @@ const ConnectFour = ({route}) => {
     const { roomId, authData } = route.params;
     setRoomId(roomId);
     setAuthData(authData)
+
     console.log("AuthData : ", authData)
   
     socket.on('playerJoined', ({ jugador1, jugador2 }) => {

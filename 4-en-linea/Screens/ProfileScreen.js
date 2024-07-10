@@ -96,19 +96,19 @@ import ItemProfile from '../components/ItemProfile/index.js';
 import AsyncStorage from '../services/AsyncStorage';
 import contactService from '../services/contacts.js';
 import { useFocusEffect } from '@react-navigation/native'; // Importa useFocusEffect
-import Authcontext , {defaultAuthData} from '../services/AutchContext'
+//import Authcontext , {defaultAuthData} from '../services/AutchContext'
 
 
 const ProfileScreen = () => {
-  const { authData, setAuthData } = useContext(Authcontext);
+  //const { authData, setAuthData } = useContext(Authcontext);
   const [contact, setContact] = useState(null);
 
   // useEffect para cargar los datos al iniciar el componente
   useEffect(() => {
     const loadData = async () => {
       const data = await AsyncStorage.getData('authData');
-      if (data) {
-        setAuthData(data);
+      // if (data) {
+      //   setAuthData(data);
         if (data.payload.id) {
           // Obtiene la información del contacto usando el id del usuario
           contactService.getContactsById(data.payload.id)
@@ -124,7 +124,7 @@ const ProfileScreen = () => {
             });
         }
       }
-    };
+    // };
     loadData();
   }, []); // Dependencia vacía para ejecutar una sola vez al montar
 
@@ -133,8 +133,8 @@ const ProfileScreen = () => {
     React.useCallback(() => {
       const loadData = async () => {
         const data = await AsyncStorage.getData('authData');
-        if (data) {
-          setAuthData(data);
+        // if (data) {
+        //   setAuthData(data);
           if (data.payload.id) {
             // Obtiene la información del contacto usando el id del usuario
             contactService.getContactsById(data.payload.id)
@@ -150,7 +150,7 @@ const ProfileScreen = () => {
               });
           }
         }
-      };
+      // };
       loadData();
     }, []) // Dependencia vacía para ejecutar una sola vez al enfocar
   );
