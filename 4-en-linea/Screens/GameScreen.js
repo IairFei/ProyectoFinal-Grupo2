@@ -1,39 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Button, Text, Vibration } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-//import { getSocket } from '../services/socket.js';
-import socket from '../services/socket';
-import contactService from '../services/contacts.js'
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry.js';
-
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  Vibration,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import socket from "../services/socket";
+import contactService from "../services/contacts.js";
 
 const ROWS = 6;
 const COLS = 7;
 
-
-const ConnectFour = ({route}) => {
+const ConnectFour = ({ route }) => {
   const navigation = useNavigation();
-  
-  const [board, setBoard] = useState(Array.from({ length: ROWS }, () => Array(COLS).fill(null)));
-  const [currentPlayer, setCurrentPlayer] = useState('red');
+
+  const [board, setBoard] = useState(
+    Array.from({ length: ROWS }, () => Array(COLS).fill(null))
+  );
+  const [currentPlayer, setCurrentPlayer] = useState("red");
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState(null);
-  const [roomId, setRoomId] = useState(null)
-  const [jugador1, setJugador1] = useState(null)
-  const [jugador2, setJugador2] = useState(null)
-  const [authData, setAuthData] = useState(null)
-  console.log("AuthData desde GameScreen: ", authData)
-  
-
+  const [roomId, setRoomId] = useState(null);
+  const [jugador1, setJugador1] = useState(null);
+  const [jugador2, setJugador2] = useState(null);
+  const [authData, setAuthData] = useState(null);
 
   useEffect(() => {
     const { roomId, authData } = route.params;
     setRoomId(roomId);
-    setAuthData(authData)
+    setAuthData(authData);
 
-    console.log("AuthData : ", authData)
-  
-    socket.on('playerJoined', ({ jugador1, jugador2 }) => {
+
+    socket.on("playerJoined", ({ jugador1, jugador2 }) => {
       if (jugador1) {
         setJugador1(jugador1);
       }
@@ -41,25 +41,28 @@ const ConnectFour = ({route}) => {
         setJugador2(jugador2);
       }
     });
-  
-    socket.on('movimiento', (data) => {
+
+    socket.on("movimiento", (data) => {
       const { updatedBoard, nextPlayer } = data;
       setBoard(updatedBoard);
       setCurrentPlayer(nextPlayer);
     });
 
- 
-  
     return () => {
-      socket.off('movimiento');
+      socket.off("movimiento");
     };
   }, [route.params]);
 
   const handlePress = (row, col) => {
-    
-    if ((getCurrentPlayerName() === "Esperando jugador" ) || (currentPlayer === 'red' && authData.payload.id !== jugador1.payload.id) || (currentPlayer === 'yellow' && authData.payload.id !== jugador2.payload.id)) {
-      //alert("Turno de: ", getCurrentPlayerName())
-      return; // Si no es el turno del jugador, no hace nada
+    if (
+      getCurrentPlayerName() === "Esperando jugador" ||
+      (currentPlayer === "red" &&
+        authData.payload.id !== jugador1.payload.id) ||
+      (currentPlayer === "yellow" &&
+        authData.payload.id !== jugador2.payload.id)
+    ) {
+  
+      return; 
     }
 
     let validateRow = findValidateRow(col);
@@ -68,13 +71,12 @@ const ConnectFour = ({route}) => {
     }
 
     const updatedBoard = [...board];
-     updatedBoard[validateRow][col] = currentPlayer;
-    Vibration.vibrate(50)
-    const nextPlayer = currentPlayer === 'red' ? 'yellow' : 'red';
-    socket.emit('movimiento', {roomId, updatedBoard, nextPlayer})
-    console.log('jugador1: ', jugador1)
-    console.log('jugador2: ', jugador2)
-
+    updatedBoard[validateRow][col] = currentPlayer;
+    Vibration.vibrate(50);
+    const nextPlayer = currentPlayer === "red" ? "yellow" : "red";
+    socket.emit("movimiento", { roomId, updatedBoard, nextPlayer });
+    console.log("jugador1: ", jugador1);
+    console.log("jugador2: ", jugador2);
   };
 
   const findValidateRow = (col) => {
@@ -85,7 +87,6 @@ const ConnectFour = ({route}) => {
     }
     return null;
   };
-
 
   useEffect(() => {
     const checkForWinner = (board, player) => {
@@ -156,41 +157,45 @@ const ConnectFour = ({route}) => {
     };
 
     const checkGameOver = () => {
-      if (checkForWinner(board, 'red')) {
-        setWinner('Ganador Jugador 1');
+      if (checkForWinner(board, "red")) {
+        setWinner("Ganador Jugador 1");
         setGameOver(true);
-        contactService.addPointWinner(jugador1.payload.id)
-        navigation.replace('GameOverScreen', { winner: 'Ganador Jugador 1', roomId });
-      } else if (checkForWinner(board, 'yellow')) {
-        setWinner('Ganador Jugador 2');
+        contactService.addPointWinner(jugador1.payload.id);
+        navigation.replace("GameOverScreen", {
+          winner: "Ganador Jugador 1",
+          roomId,
+        });
+      } else if (checkForWinner(board, "yellow")) {
+        setWinner("Ganador Jugador 2");
         setGameOver(true);
-        contactService.addPointWinner(jugador2.payload.id)
-        navigation.replace('GameOverScreen', { winner: 'Ganador Jugador 2', roomId });
+        contactService.addPointWinner(jugador2.payload.id);
+        navigation.replace("GameOverScreen", {
+          winner: "Ganador Jugador 2",
+          roomId,
+        });
       } else if (boardFull(board)) {
-        setWinner('Empate');
+        setWinner("Empate");
         setGameOver(true);
-        contactService.addPointTie(jugador1.payload.id)
-        contactService.addPointTie(jugador2.payload.id)
-        navigation.replace('GameOverScreen', { winner: 'Empate', roomId });
+        contactService.addPointTie(jugador1.payload.id);
+        contactService.addPointTie(jugador2.payload.id);
+        navigation.replace("GameOverScreen", { winner: "Empate", roomId });
       }
     };
 
     checkGameOver();
   }, [board, navigation]);
 
-  
-  
-
   const getCurrentPlayerName = () => {
-    if(!jugador1 || !jugador2){
-      return "Esperando jugador"
+    if (!jugador1 || !jugador2) {
+      return "Esperando jugador";
     }
-    return currentPlayer === 'red' ? `Turno de: ${jugador1.payload.name}` : `Turno de: ${jugador2.payload.name}`;
+    return currentPlayer === "red"
+      ? `Turno de: ${jugador1.payload.name}`
+      : `Turno de: ${jugador2.payload.name}`;
   };
 
   return (
     <View style={styles.container}>
-  
       <View style={styles.board}>
         {board.map((row, rowIndex) => (
           <View key={rowIndex} style={styles.row}>
@@ -208,7 +213,6 @@ const ConnectFour = ({route}) => {
         ))}
       </View>
       <Text style={styles.text}>
-        {/* {currentPlayer === 'red' ? `Turno jugador 1 ()` : `Turno jugador 2 ()`} */}
         {getCurrentPlayerName()}
       </Text>
     </View>
@@ -218,43 +222,43 @@ const ConnectFour = ({route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#282C34',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#282C34",
+    justifyContent: "center",
+    alignItems: "center",
   },
   text: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   board: {
-    backgroundColor: '#1e1e1e',
+    backgroundColor: "#1e1e1e",
     padding: 10,
     borderRadius: 10,
     marginBottom: 20,
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   cell: {
     width: 50,
     height: 50,
     margin: 2,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   disc: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   red: {
-    backgroundColor: 'red',
+    backgroundColor: "red",
   },
   yellow: {
-    backgroundColor: 'yellow',
+    backgroundColor: "yellow",
   },
 });
 
