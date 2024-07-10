@@ -25,9 +25,6 @@ export default function GameOverScreen() {
           <TouchableOpacity style={styles.button} onPress={irAInicio}>
             <Text style={styles.buttonText}>Volver al inicio</Text>
           </TouchableOpacity>
-          {/* <TouchableOpacity style={styles.button} onPress={reiniciarJuego}>
-            <Text style={styles.buttonText}>Reiniciar juego</Text>
-          </TouchableOpacity> */}
         </View>
       </View>
     </ImageBackground>
