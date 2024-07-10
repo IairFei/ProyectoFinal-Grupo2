@@ -29,6 +29,7 @@ export default function RegisterLoginScreen() {
       authService.login(email, password)
       .then((authData) => {
           setAuthData(authData)
+          console.log("Auth data desde registerLoggin handlelogin: ", typeof authData, authData)
       })
       .catch((error) => {
           alert(error)

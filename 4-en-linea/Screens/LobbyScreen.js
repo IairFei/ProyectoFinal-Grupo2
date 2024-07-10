@@ -212,8 +212,9 @@ export default function LobbyScreen() {
   const [rooms, setRooms] = useState([]);
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [updateCounter, setUpdateCounter] = useState(0); // Estado adicional para forzar la actualización
-  const { authData } = useContext(Authcontext);
   const navigation = useNavigation();
+  
+  const { authData } = useContext(Authcontext);
 
   useEffect(() => {
     const handleConnect = () => setIsConnected(true);
